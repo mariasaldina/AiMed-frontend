@@ -1,0 +1,136 @@
+.button {
+    height: 44px;
+    padding: 0 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.05s ease;
+
+    user-select: none;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &--submit {
+        background: #111827;
+        color: #ffffff;
+        border: 1px solid #111827;
+
+        &:hover:not(:disabled) {
+            background: #1f2937;
+            border-color: #1f2937;
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+    }
+
+    &--standard {
+        background: #111827;
+        color: #ffffff;
+        border: 1px solid #111827;
+
+        border-radius: 30px;
+
+        &:hover:not(:disabled) {
+            background: #1f2937;
+            border-color: #1f2937;
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+    }
+
+    &--doctors {
+        background: #5377c6;
+        color: #ffffff;
+        border: 1px solid #5377c6;
+        font-size: 14px;
+        border-radius: 30px;
+        height: 30px;
+
+        margin-top: 20px;
+
+        &:hover:not(:disabled) {
+            background: #374f83;
+            border-color: #374f83;
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+    }
+
+    &--input {
+        background: #5377c6;
+        color: #ffffff;
+        font-size: 16px;
+        border-radius: 30px;
+
+        &:hover:not(:disabled) {
+            background: #374f83;
+            border-color: #374f83;
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+    }
+
+    &--ghost {
+        background: transparent;
+        color: #374151;
+        border: 1px solid transparent;
+
+        &:hover:not(:disabled) {
+            background: rgba(17, 24, 39, 0.05);
+        }
+
+        &:active:not(:disabled) {
+            background: rgba(17, 24, 39, 0.08);
+        }
+
+        &:disabled {
+            opacity: 0.4;
+        }
+    }
+
+    &--secondary {
+        background: #424C55;
+        color: #fff;
+        border: 3px solid #424C55;
+
+        border-radius: 20px;
+        opacity: 0.7;
+
+        &:hover:not(:disabled) {
+            opacity: 1;
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .button {
+        font-size: 14px;
+    }
+}

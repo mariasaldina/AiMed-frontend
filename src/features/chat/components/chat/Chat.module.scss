@@ -1,0 +1,25 @@
+.chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.container {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.messageList {
+    list-style: none;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 25px
+}
+
+.loader {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
