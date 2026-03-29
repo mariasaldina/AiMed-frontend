@@ -1,5 +1,5 @@
-import LoginForm from "@/features/auth/components/loginForm/LoginForm"
-import SignUpForm from "@/features/auth/components/signUpForm/SignUpForm"
+import LoginForm from "@/features/auth/components/LoginForm"
+import SignUpForm from "@/features/auth/components/SignUpForm"
 import { useState } from "react"
 import styles from './LoginPage.module.scss'
 

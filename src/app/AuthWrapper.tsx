@@ -1,15 +1,13 @@
-import { getUser } from "@/features/user/userSlice"
-import { useAppDispatch } from "@/hooks/redux"
-import { useEffect, type ReactNode } from "react"
+import { useAppSelector } from "@/hooks/redux"
+import { Navigate, Outlet, useLocation } from "react-router-dom"
 
-const AuthWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const dispatch = useAppDispatch()
+const AuthWrapper = () => {
+    const user = useAppSelector(state => state.user)
+    const location = useLocation()
 
-    useEffect(() => {
-        dispatch(getUser())
-    }, [])
+    if (!user) return <Navigate to="/auth" state={{ from: location }} replace />
 
-    return children
+    return <Outlet />
 }
 
 export default AuthWrapper

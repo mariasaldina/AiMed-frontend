@@ -1,7 +1,7 @@
 import type React from 'react'
 import type { Doctor } from '../../types/message'
 import styles from './DoctorSuggestions.module.scss'
-import Button from '@/ui/btn/Button'
+import { Badge, Button, Flex, Paper, Stack, Text } from '@mantine/core'
 
 interface DoctorSuggestionsProps {
     doctors: Doctor[],
@@ -44,61 +44,62 @@ const getExperience = (practiceStartDate: Date): string => {
 
 const DoctorSuggestions: React.FC<DoctorSuggestionsProps> = ({ doctors, getContacts }) => {
     return (
-        <li className={styles.wrapper}>
-            <div className={styles.group}>
-                <div className={styles.title}>Подходящие специалисты</div>
-
-                <ul className={styles.list}>
-                    {doctors.map((d) => (
-                        <li key={d.userId} className={styles.item}>
-                            <article className={styles.card}>
-
-                                <div className={styles.header}>
-                                    <div className={styles.name}>{d.fullName}</div>
-                                    <div className={styles.experience}>
-                                        {getExperience(d.practiceStartDate)}
-                                    </div>
-                                </div>
+        <Stack gap={5} style={{ alignSelf: 'flex-start' }} maw={{ base: 500, sm: 700 }}>
+            <Text fw={800}>Подходящие специалисты</Text>
+            <Stack gap={5}>
+                {doctors.map((d) => (
+                    <Paper
+                        key={d.userId}
+                        withBorder
+                        bdrs={30}
+                        px={{ base: 'md', sm: 'lg' }}
+                        py={{ base: 'xs', sm: 'md' }}
+                    >
+                        <Flex justify={'space-between'}>
+                            <Stack gap={7} flex={1}>
+                                <Text fw={700}>
+                                    {d.fullName}
+                                </Text>
+                                <Text c="blue" size='sm'>{getExperience(d.practiceStartDate)}</Text>
 
                                 {d.specializations.length > 0 && (
-                                    <ul className={styles.tags}>
+                                    <Stack>
                                         {d.specializations.map((s, i) => (
-                                            <li key={`${d.userId}-${i}`} className={styles.tag}>
+                                            <Badge key={`${d.userId}-${i}`} variant='light' color='blue'>
                                                 {s}
-                                            </li>
+                                            </Badge>
                                         ))}
-                                    </ul>
+                                    </Stack>
                                 )}
 
-                                <div className={styles.meta}>
-                                    <div className={styles.row}>
-                                        <span className={styles.label}>Адрес:</span>
-                                        <span>{d.address}</span>
-                                    </div>
+                                <Stack gap={10}>
+                                    <Stack gap={2}>
+                                        <Text size='sm' fw={600}>Адрес:</Text>
+                                        <Text size='sm'>{d.address}</Text>
+                                    </Stack>
 
-                                    <div className={styles.row}>
-                                        <span className={styles.label}>Образование:</span>
-                                        <span>{d.education}</span>
-                                    </div>
-                                </div>
+                                    <Stack gap={2}>
+                                        <Text size='sm' fw={600}>Образование:</Text>
+                                        <Text size='sm'>{d.education}</Text>
+                                    </Stack>
+                                </Stack>
 
                                 {d.description && (
-                                    <p className={styles.description}>{d.description}</p>
+                                    <Text size='md'>{d.description}</Text>
                                 )}
-
-                                <Button
-                                    type="button"
-                                    variant="doctors"
-                                    onClick={(e) => { e.stopPropagation(); getContacts(Number(d.userId)); }}
-                                >
-                                    Связаться
-                                </Button>
-                            </article>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </li>
+                            </Stack>
+                            <Button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); getContacts(Number(d.userId)); }}
+                                variant='gradient'
+                            >
+                                Связаться
+                            </Button>
+                        </Flex>
+                    </Paper>
+                ))}
+            </Stack>
+        </Stack>
     )
 }
 

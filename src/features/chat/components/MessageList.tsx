@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react"
 import type { Message } from "../types/message"
-import AssistantMessage from "./assistantMessage/AssitantMessage"
-import UserMessage from "./userMessage/UserMessage"
+import AssistantMessage from "./AssitantMessage"
+import UserMessage from "./UserMessage"
 import DoctorSuggestions from "./doctorSuggestions/DoctorSuggestions"
 import ContactsMessage from "./contactsMessage/ContactsMessage"
 import { uuidv4 } from "zod"
+import { Flex } from "@mantine/core"
 
 interface MessageListProps {
     messages: Message[],
@@ -13,14 +14,14 @@ interface MessageListProps {
 }
 
 const MessageList: React.FC<MessageListProps> = ({ messages, className, getContacts }) => {
-    const bottomRef = useRef<HTMLDivElement | null>(null)
-
-    useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, [messages])
 
     return (
-        <ul className={className}>
+        <Flex
+            direction={'column'}
+            style={{ listStyle: 'none' }}
+            p={{ base: 'md', sm: 'xl' }}
+            gap={{ base: 'md', sm: 'xl' }}
+        >
             {messages.map(m =>
                 m.kind === "user"
                 ? <UserMessage key={m.id} content={m.content} />
@@ -38,8 +39,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, className, getConta
                 ? <ContactsMessage key={m.id} contacts={m.content}/>
                 : <div key={String(uuidv4())}/>
             )}
-            <div ref={bottomRef} />
-        </ul>
+        </Flex>
     )
 }
 

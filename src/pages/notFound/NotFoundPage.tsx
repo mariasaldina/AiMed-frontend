@@ -1,7 +1,7 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import styles from "./NotFoundPage.module.scss"
-import Button from "@/ui/btn/Button"
+import { Button } from "@mantine/core"
 
 const NotFoundPage: React.FC = () => {
     const navigate = useNavigate()
@@ -13,7 +13,6 @@ const NotFoundPage: React.FC = () => {
             <Button
                 onClick={() => navigate("/chats")}
                 type="button"
-                variant="standard"
             >
                 Вернуться на главную
             </Button>

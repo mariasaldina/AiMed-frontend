@@ -1,4 +1,4 @@
-import type { UserRole } from "@/features/user/types";
+import type { UserRole } from "@/features/userSlice/types";
 
 export interface LoginCredentialsDto {
     username: string,

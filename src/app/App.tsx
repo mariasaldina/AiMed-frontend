@@ -1,30 +1,20 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-import HomePage from "@/pages/home/HomePage"
-import PrivateRoute from "./PrivateRoute"
-import LoginPage from "@/pages/login/LoginPage"
-import ProtectedAuthRoute from "./ProtectedAuthRoute"
-import NotFoundPage from "@/pages/notFound/NotFoundPage"
-import AuthWrapper from "./AuthWrapper"
+import { BrowserRouter } from "react-router-dom"
+import UserInitializer from "./UserInitializer"
 import { Provider } from "react-redux"
 import { store } from "@/lib/store"
+import CommonWrapper from "./CommonWrapper"
+import AppRouter from "./AppRouter"
 
 const App = () => {
     return (
         <Provider store={store}>
-            <AuthWrapper>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<Navigate to="/chats" />} />
-                        <Route path="/auth" element={
-                            // <ProtectedAuthRoute>
-                                <LoginPage />
-                            // </ProtectedAuthRoute>
-                        } />
-                        <Route path="/chats/:chatId?" element={<PrivateRoute><HomePage /></PrivateRoute>} />
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
-                </BrowserRouter>
-            </AuthWrapper>
+            <BrowserRouter>
+                <UserInitializer>
+                    <CommonWrapper>
+                        <AppRouter />
+                    </CommonWrapper>
+                </UserInitializer>
+            </BrowserRouter>
         </Provider>
     )
 }
