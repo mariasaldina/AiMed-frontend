@@ -1,17 +1,19 @@
 import { useEffect } from "react"
 import MessageList from "./MessageList"
 import MessageInput from "./MessageInput"
-import Loader from "@/ui/loader/Loader"
-import TypingIndicator from "@/ui/typingIndicator/TypingIndicator"
-import { Box, Center, Flex, ScrollArea } from "@mantine/core"
+import TypingIndicator from "@/ui/TypingIndicator"
+import { Box, Center, Flex, Loader, ScrollArea } from "@mantine/core"
 import useChat from "../hooks/useChat"
 import { useScrollIntoView } from "@mantine/hooks"
+import { useParams } from "react-router-dom"
 
-interface ChatProps {
-    chatId: number
-}
+const Chat = () => {
+    const { chatId } = useParams()
+    const parsedChatId = chatId ? Number(chatId) : null
+    const hasChat = Boolean(parsedChatId)
+    
+    if (!parsedChatId) return
 
-const Chat: React.FC<ChatProps> = ({ chatId }) => {
     const {
         messages,
         messageListLoading,
@@ -21,7 +23,7 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
         handleSend,
         findDoctors,
         getContacts
-    } = useChat(chatId)
+    } = useChat(parsedChatId)
 
     const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({
         offset: 0,
@@ -35,7 +37,7 @@ const Chat: React.FC<ChatProps> = ({ chatId }) => {
     return (
         <Flex h={"100%"} direction={"column"}>
             {messageListLoading ?
-                <Center><Loader size={50} /></Center> :
+                <Center><Loader /></Center> :
                 <Box flex={1} mih={0}>
                     <ScrollArea
                         h={"100%"}

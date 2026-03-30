@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
-import Form from '@/ui/form/Form';
+import Form from '@/ui/Form';
 import { useState } from 'react';
 import { signUp } from '@/features/auth/api/auth';
 import { setUser } from '@/features/userSlice/userSlice';

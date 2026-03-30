@@ -1,4 +1,4 @@
-import Loader from "@/ui/loader/Loader"
+import { Loader } from '@mantine/core'
 import styles from './Sidebar.module.scss'
 import { type ReactNode } from "react"
 
@@ -16,7 +16,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             {isLoading
                 ?
                 <div className={styles.loader}>
-                    <Loader size={30} />
+                    <Loader />
                 </div>
                 :
                 (!folded && children)

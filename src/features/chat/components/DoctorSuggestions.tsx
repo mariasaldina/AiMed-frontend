@@ -1,6 +1,5 @@
 import type React from 'react'
-import type { Doctor } from '../../types/message'
-import styles from './DoctorSuggestions.module.scss'
+import type { Doctor } from '../types/message'
 import { Badge, Button, Flex, Paper, Stack, Text } from '@mantine/core'
 
 interface DoctorSuggestionsProps {

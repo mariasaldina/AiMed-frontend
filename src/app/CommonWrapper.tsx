@@ -1,11 +1,11 @@
 import { useAppSelector } from "@/hooks/redux"
-import Loader from "@/ui/loader/Loader"
+import { Loader } from "@mantine/core"
 import type { ReactNode } from "react"
 
 const CommonWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
     const loading = useAppSelector(state => state.settings.loading)
     
-    if (loading) return <Loader fullScreen={true} />
+    if (loading) return <Loader />
 
     return children
 }

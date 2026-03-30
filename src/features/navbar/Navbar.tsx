@@ -4,16 +4,19 @@ import { IconTrash } from "@tabler/icons-react"
 import CreateChatModal from "../chat/components/CreateChatModal";
 import { useAppSelector } from "@/hooks/redux";
 import useChatList from "../chat/hooks/useChatList";
+import { useParams } from "react-router-dom";
 
 interface NavbarProps extends AppShellNavbarProps {
-    displayedChat: number | null,
     onChatSelect: () => void
 }
 
-const Navbar: React.FC<NavbarProps> = ({ displayedChat, onChatSelect }) => {
+const Navbar: React.FC<NavbarProps> = ({ onChatSelect }) => {
+    const { chatId } = useParams()
+    const parsedChatId = chatId ? Number(chatId) : null
+
     const chats = useAppSelector(state => state.chats)
 
-    const { handleDelete, handleSelect } = useChatList(displayedChat, onChatSelect)
+    const { handleDelete, handleSelect } = useChatList(parsedChatId, onChatSelect)
 
     return (
         <Stack p={{ base: 'md', sm: 'lg' }}>
