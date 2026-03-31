@@ -37,7 +37,7 @@ const Chat = () => {
     return (
         <Flex h={"100%"} direction={"column"}>
             {messageListLoading ?
-                <Center><Loader /></Center> :
+                <Center h={'100%'}><Loader /></Center> :
                 <Box flex={1} mih={0}>
                     <ScrollArea
                         h={"100%"}

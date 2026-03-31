@@ -1,13 +1,19 @@
 import { useAppSelector } from "@/hooks/redux"
-import { Navigate, Outlet, useLocation } from "react-router-dom"
+import type { ReactNode } from "react"
+import { Navigate, useLocation } from "react-router-dom"
 
-const AuthWrapper = () => {
-    const user = useAppSelector(state => state.user)
+const AuthWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const { user } = useAppSelector(state => state.userReducer)
     const location = useLocation()
 
-    if (!user) return <Navigate to="/auth" state={{ from: location }} replace />
+    const publicPaths = ['/auth']
+    const isPublicPath = publicPaths.includes(location.pathname)
 
-    return <Outlet />
+    if (!user && !isPublicPath) {
+        return <Navigate to="/auth" state={{ from: location }} replace />
+    }
+
+    return children
 }
 
 export default AuthWrapper

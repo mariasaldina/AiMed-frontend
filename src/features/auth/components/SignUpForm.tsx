@@ -1,13 +1,13 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, type SubmitHandler } from 'react-hook-form';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import Form from '@/ui/Form';
 import { useState } from 'react';
 import { signUp } from '@/features/auth/api/auth';
-import { setUser } from '@/features/userSlice/userSlice';
+import { setUser } from '@/features/user/lib/userSlice';
 import { Button, PasswordInput, TextInput } from '@mantine/core';
 import { useAppDispatch } from '@/hooks/redux';
+import { useForm } from '@mantine/form';
+import { zod4Resolver } from 'mantine-form-zod-resolver';
 
 const signUpSchema = z.object({
     username: z.string().min(1, 'Обязательное поле'),
@@ -17,16 +17,20 @@ const signUpSchema = z.object({
 type SignUpFormValues = z.infer<typeof signUpSchema>
 
 const SignUpForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormValues>({
-        resolver: zodResolver(signUpSchema)
+    const form = useForm({
+        initialValues: {
+            username: '',
+            password: ''
+        },
+        validate: zod4Resolver(signUpSchema)
     })
 
     const [formError, setFormError] = useState<string | null>(null)
-    
+
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
-    const onSubmit: SubmitHandler<SignUpFormValues> = async (data) => {
+    const onSubmit = async (data: SignUpFormValues) => {
         try {
             const user = await signUp({ ...data, role: 'PATIENT' })
             dispatch(setUser(user))
@@ -37,22 +41,20 @@ const SignUpForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
     }
 
     return (
-        <Form onSubmit={handleSubmit(onSubmit)} title="Зарегистрироваться">
+        <Form onSubmit={form.onSubmit(onSubmit)} title="Зарегистрироваться">
             <TextInput
-                {...register('username')}
                 label="Username"
-                error={errors.username ? errors.username.message : formError}
                 onFocus={() => setFormError(null)}
+                {...form.getInputProps('username')}
             />
             <PasswordInput
-                {...register('password')}
                 label="Пароль"
-                error={errors.password?.message}
+                {...form.getInputProps('password')}
             />
 
             <Button type="submit">Зарегистрироваться</Button>
 
-            <Button type="button" onClick={onSwitch}>
+            <Button type="button" onClick={onSwitch} variant='outline'>
                 Уже есть аккаунт? Войти
             </Button>
         </Form>

@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "@/features/userSlice/userSlice";
+import userReducer from "@/features/user/lib/userSlice";
 import settingsReducer from "@/features/settingsSlice/settingsSlice"
-import chatsReducer from "@/features/chatSlice/chatSlice"
+import chatsReducer from "@/features/chat/lib/chatSlice"
 
 export const store = configureStore({
     reducer: {
-        user: userReducer,
-        settings: settingsReducer,
-        chats: chatsReducer
+        userReducer,
+        settingsReducer,
+        chatsReducer
     }
 })
 

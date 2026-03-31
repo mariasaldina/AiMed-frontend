@@ -1,7 +1,7 @@
 import { useAppDispatch } from "@/hooks/redux"
 import { useNavigate } from "react-router-dom"
 import { deleteChat } from "../api/chatApi"
-import { removeChat } from "@/features/chatSlice/chatSlice"
+import { removeChat } from "@/features/chat/lib/chatSlice"
 
 const useChatList = (displayedChat: number | null, onChatSelect: () => void) => {
     const navigate = useNavigate()

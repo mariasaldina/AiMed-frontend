@@ -1,4 +1,4 @@
-import { Button, Flex, Portal } from "@mantine/core"
+import { Button, Center, Portal, Title } from "@mantine/core"
 import { IconLogin } from "@tabler/icons-react"
 import { useNavigate } from "react-router-dom"
 
@@ -6,14 +6,17 @@ const LandingLayout = () => {
     const navigate = useNavigate()
 
     return (
-        <Portal target='#header-actions'>
-            <Button onClick={() => navigate('/auth')}>
-                <Flex gap={10} align={'center'}>
+        <>
+            <Portal target='#header-actions'>
+                <Button onClick={() => navigate('/auth')} leftSection={<IconLogin />}>
                     Войти
-                    <IconLogin />
-                </Flex>
-            </Button>
-        </Portal>
+                </Button>
+            </Portal>
+
+            <Center h={'100dvh'}>
+                <Title size='xl' fw={700}>Добро пожаловать!</Title>
+            </Center>
+        </>
     )
 }
 

@@ -1,11 +1,6 @@
 import api from "@/lib/axios"
 import type { LoginCredentialsDto, SignUpCredentialsDto } from "@/features/auth/types/auth"
-import type { User } from "@/types/user"
-
-export const getUser = async (): Promise<User> => {
-    const { data } = await api.get<User>('/user/me')
-    return data
-}
+import type { User } from "@/features/user/types/user"
 
 export const login = async (credentials: LoginCredentialsDto) => {
     await api.post<User>('/auth/login', credentials)

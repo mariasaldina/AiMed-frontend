@@ -1,7 +1,7 @@
 import { getChats } from "@/features/chat/api/chatApi"
 import { useEffect } from "react"
 import { Outlet } from "react-router-dom"
-import { setChats } from "@/features/chatSlice/chatSlice"
+import { setChats } from "@/features/chat/lib/chatSlice"
 import { useAppDispatch } from "@/hooks/redux"
 
 const ChatFetcher = () => {

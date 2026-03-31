@@ -1,14 +1,17 @@
 import Navbar from "@/features/navbar/Navbar"
 import { AppShell, Burger, Flex } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { Outlet } from "react-router-dom"
+import { matchPath, Outlet, useLocation } from "react-router-dom"
 
-interface MainLayoutProps {
-    withNavbar: boolean
-}
+const AppLayout = () => {
+    const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true)
+    const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] = useDisclosure(false)
 
-const AppLayout: React.FC<MainLayoutProps> = ({ withNavbar }) => {
-    const [opened, { toggle, close }] = useDisclosure()
+    const { pathname } = useLocation()
+    const showNavbarPaths = ['/chats', '/chats/:chatId']
+    const withNavbar = showNavbarPaths.some(pattern => 
+        matchPath(pattern, pathname)
+    )
 
     return (
         <AppShell
@@ -18,8 +21,8 @@ const AppLayout: React.FC<MainLayoutProps> = ({ withNavbar }) => {
                 },
                 breakpoint: 'sm',
                 collapsed: {
-                    desktop: !opened,
-                    mobile: !opened
+                    desktop: !desktopOpened,
+                    mobile: !mobileOpened
                 }
             } : undefined}
 
@@ -30,8 +33,11 @@ const AppLayout: React.FC<MainLayoutProps> = ({ withNavbar }) => {
                 <Flex h={'100%'} w={'100%'} align={'center'} p={{ base: 'xs', sm: 'md' }}>
                     {withNavbar &&
                         <Burger
-                            opened={opened}
-                            onClick={toggle}
+                            opened={desktopOpened || mobileOpened}
+                            onClick={() => {
+                                toggleDesktop()
+                                toggleMobile()
+                            }}
                             size="sm"
                         />}
                     <div id="header-actions" style={{ marginLeft: 'auto' }}></div>
@@ -39,7 +45,7 @@ const AppLayout: React.FC<MainLayoutProps> = ({ withNavbar }) => {
             </AppShell.Header>
 
             {withNavbar && <AppShell.Navbar w={{ base: '75%', sm: 320 }}>
-                <Navbar onChatSelect={close} />
+                <Navbar onChatSelect={closeMobile} />
             </AppShell.Navbar>}
 
             <AppShell.Main

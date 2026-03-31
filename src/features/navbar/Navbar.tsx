@@ -14,7 +14,7 @@ const Navbar: React.FC<NavbarProps> = ({ onChatSelect }) => {
     const { chatId } = useParams()
     const parsedChatId = chatId ? Number(chatId) : null
 
-    const chats = useAppSelector(state => state.chats)
+    const { chats } = useAppSelector(state => state.chatsReducer)
 
     const { handleDelete, handleSelect } = useChatList(parsedChatId, onChatSelect)
 

@@ -11,7 +11,7 @@ const LoginLayout = () => {
     return (
         <>
             <Portal target='#header-actions'>
-                <Button onClick={() => navigate('/')}>Домой</Button>
+                <Button onClick={() => navigate('/')}>На главную</Button>
             </Portal>
 
             <Center pos={'relative'} h="100dvh" w="100dvw">

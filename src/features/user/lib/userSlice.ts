@@ -1,34 +1,36 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { User } from "./types";
-import api from "@/lib/axios";
+import type { User } from "../types/user";
+import { getUser as getUserApi } from '@/features/user/api/user'
 
-type UserState = User | null
+interface UserSliceType {
+    user: User | null
+}
 
-const initialState: UserState = null as UserState
+const initialState: UserSliceType = { user: null }
 
 const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<User | null>) => {
-            return action.payload
+            state.user = action.payload
         },
         resetUser: (state) => {
-            return null
+            state.user = null
         }
     },
     extraReducers: builder => {
         builder
             .addCase(getUser.fulfilled, (state, action: PayloadAction<User>) => {
-                return action.payload
+                state.user = action.payload
             })
     }
 })
 
 export const getUser = createAsyncThunk('user/getUser',
     async () => {
-        const { data } = await api.get<User>('/user/me')
-        return data
+        const user = await getUserApi()
+        return user
     }
 )
 

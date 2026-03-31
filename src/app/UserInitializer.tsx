@@ -1,4 +1,4 @@
-import { getUser } from "@/features/userSlice/userSlice"
+import { getUser } from "@/features/user/lib/userSlice"
 import { useAppDispatch } from "@/hooks/redux"
 import { useEffect, type ReactNode } from "react"
 

@@ -1,22 +1,24 @@
 import { createSlice, type PayloadAction  } from "@reduxjs/toolkit";
-import type { Chat } from "../chat/types/chat";
+import type { Chat } from "../types/chat";
 
-type ChatsState = Chat[]
+interface ChatsSliceType {
+    chats: Chat[]
+}
 
-const initialState: ChatsState = []
+const initialState: ChatsSliceType = { chats: [] }
 
 const chatsSlice = createSlice({
     name: 'chats',
     initialState,
     reducers: {
-        setChats: (state, action: PayloadAction<ChatsState>) => {
-            return action.payload
+        setChats: (state, action: PayloadAction<Chat[]>) => {
+            state.chats = action.payload
         },
         addChat: (state, action: PayloadAction<Chat>) => {
-            state.unshift(action.payload)
+            state.chats.unshift(action.payload)
         },
         removeChat: (state, action: PayloadAction<number>) => {
-            return state.filter(c => c.id !== action.payload)
+            state.chats.filter(c => c.id !== action.payload)
         }
     }
 })

@@ -1,6 +1,6 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { Settings } from "./types";
-import { getUser } from "../userSlice/userSlice";
+import { getUser } from "../user/lib/userSlice";
 
 const initialState: Settings = { loading: true, errors: [] }
 
