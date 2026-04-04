@@ -8,5 +8,6 @@ export interface LoginCredentialsDto {
 export interface SignUpCredentialsDto {
     username: string,
     password: string,
+    fullName: string,
     role: UserRole
 }
