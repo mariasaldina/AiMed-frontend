@@ -5,13 +5,14 @@ import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
-const useChat = (chatId: number) => {
+const useChat = (chatId: number | null) => {
     const [messages, setMessages] = useState<Message[]>([])
     const [messageListLoading, setMessageListLoading] = useState(false)
     const [messageSending, setMessageSending] = useState(false)
     const [inputValue, setInputValue] = useState('')
 
     const handleSend = async () => {
+        if (!chatId) return
         if (!inputValue.trim()) return
 
         const tempId = uuidv4()
@@ -44,6 +45,8 @@ const useChat = (chatId: number) => {
     const navigate = useNavigate()
 
     useEffect(() => {
+        if (!chatId) return
+
         const controller = new AbortController()
         const loadMessages = async () => {
             try {
@@ -71,6 +74,7 @@ const useChat = (chatId: number) => {
     }, [chatId])
 
     const findDoctors = async () =>{
+        if (!chatId) return
         try {
             setMessageSending(true)
             const message = await findDoctorsApi(chatId)
@@ -83,10 +87,10 @@ const useChat = (chatId: number) => {
     }
 
     const getContacts = async (doctorId: number) => {
+        if (!chatId) return
         try {
             setMessageSending(true)
-            const message = await getContactsApi(chatId, doctorId)
-            setMessages(prev => [...prev, message])
+            await getContactsApi(chatId, doctorId)
         } catch (e) {
             console.log(e)
         } finally {

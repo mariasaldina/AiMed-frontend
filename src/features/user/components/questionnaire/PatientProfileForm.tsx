@@ -2,12 +2,12 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux"
 import { Group, Radio, TextInput } from "@mantine/core"
 import { DateInput } from '@mantine/dates'
 import { useForm } from "@mantine/form"
-import type { PatientProfile } from "../types/user"
-import { editPatientProfile } from "../api/user"
 import * as z from "zod"
 import { zod4Resolver } from "mantine-form-zod-resolver"
-import { updatePatientProfile } from "../lib/userSlice"
-import FormTemplate from "./FormTemplate"
+import type { PatientProfile } from "../../types/user"
+import { editPatientProfile } from "../../api/user"
+import { updatePatientProfile } from "../../lib/userSlice"
+import FormTemplate from "../FormTemplate"
 
 interface PatientProfileFormProps {
     isEditing: boolean,

@@ -1,19 +1,16 @@
-import { useEffect, useRef } from "react"
 import type { Message } from "../types/message"
 import AssistantMessage from "./AssitantMessage"
 import UserMessage from "./UserMessage"
 import DoctorSuggestions from "./DoctorSuggestions"
-import ContactsMessage from "./contactsMessage/ContactsMessage"
 import { uuidv4 } from "zod"
 import { Flex } from "@mantine/core"
 
 interface MessageListProps {
     messages: Message[],
-    className?: string,
     getContacts: (doctorId: number) => void
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages, className, getContacts }) => {
+const MessageList: React.FC<MessageListProps> = ({ messages, getContacts }) => {
 
     return (
         <Flex
@@ -35,8 +32,6 @@ const MessageList: React.FC<MessageListProps> = ({ messages, className, getConta
                 />
                 : m.kind === "doctorSuggestions"
                 ? <DoctorSuggestions key={m.id} doctors={m.doctors} getContacts={getContacts}/>
-                : m.kind === "contacts"
-                ? <ContactsMessage key={m.id} contacts={m.content}/>
                 : <div key={String(uuidv4())}/>
             )}
         </Flex>

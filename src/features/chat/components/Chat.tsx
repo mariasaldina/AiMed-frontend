@@ -11,8 +11,6 @@ const Chat = () => {
     const { chatId } = useParams()
     const parsedChatId = chatId ? Number(chatId) : null
     const hasChat = Boolean(parsedChatId)
-    
-    if (!parsedChatId) return
 
     const {
         messages,

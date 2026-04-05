@@ -9,6 +9,7 @@ import { useAppDispatch } from '@/hooks/redux';
 import { useForm } from '@mantine/form';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import type { UserRole } from '@/features/user/types/user';
+import { getUser } from '@/features/user/api/user';
 
 const step1Schema = z.object({
     username: z.string().min(1, 'Обязательное поле'),
@@ -64,7 +65,8 @@ const SignUpForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
 
     const onSubmit = async (data: SignUpFormValues) => {
         try {
-            const user = await signUp(data)
+            await signUp(data)
+            const user = await getUser()
             dispatch(setUser(user))
             navigate('/chats')
         } catch (err: any) {

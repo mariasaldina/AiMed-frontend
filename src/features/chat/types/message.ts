@@ -20,23 +20,9 @@ export interface Doctor {
     practiceStartDate: Date
 }
 
-export interface ContactDto {
-    id: number
-    type: 'EMAIL' | 'PHONE' | 'MESSENGER' | 'OTHER'
-    value: string
-    isPrimary: boolean
-}
-
-export interface Contact {
-    id: string
-    type: 'EMAIL' | 'PHONE' | 'MESSENGER' | 'OTHER'
-    value: string
-    isPrimary: boolean
-}
-
 export interface MessageDto {
     id: number,
-    type: 'USER' | 'ASSISTANT' | 'CONTACTS' | 'DOCTOR_SUGGESTIONS'
+    type: 'USER' | 'ASSISTANT' | 'DOCTOR_SUGGESTIONS'
     createdAt: string
     userPayload?: {
         content: string
@@ -46,10 +32,6 @@ export interface MessageDto {
         recommendations: string[]
         urgency: UrgencyStatus
         doctors: string[]
-    },
-    contactsPayload?: {
-        content: ContactDto[]
-        doctorId: number
     },
     doctorSuggestionsPayload?: {
         doctors: DoctorDto[]
@@ -71,13 +53,6 @@ export type Message =
         recommendations: string[]
         urgency: UrgencyStatus
         doctors: string[]
-    }
-    | {
-        kind: 'contacts'
-        id: string
-        createdAt: Date
-        content: Contact[]
-        doctorId: number
     }
     | {
         kind: 'doctorSuggestions'

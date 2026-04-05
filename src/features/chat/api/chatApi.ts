@@ -46,7 +46,6 @@ export const findDoctorsApi = async (chatId: number): Promise<Message> => {
     return mapMessage(data)
 }
 
-export const getContactsApi = async (chatId: number, doctorId: number): Promise<Message> => {
-    const { data } = await api.post<MessageDto>(`/chat/${chatId}/doctors/${doctorId}/contacts`)
-    return mapMessage(data)
+export const getContactsApi = async (chatId: number, doctorId: number) => {
+    await api.post<MessageDto>(`/chat/${chatId}/doctors/${doctorId}/contacts`)
 }

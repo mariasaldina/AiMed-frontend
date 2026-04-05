@@ -1,22 +1,22 @@
 import { type AppShellNavbarProps } from "@mantine/core";
 import { ActionIcon, Group, Paper, ScrollArea, Stack, Text } from "@mantine/core"
 import { IconTrash } from "@tabler/icons-react"
-import CreateChatModal from "../chat/components/CreateChatModal";
 import { useAppSelector } from "@/hooks/redux";
-import useChatList from "../chat/hooks/useChatList";
 import { useParams } from "react-router-dom";
+import CreateChatModal from "./CreateChatModal";
+import useChatList from "../hooks/useChatList";
 
-interface NavbarProps extends AppShellNavbarProps {
-    onChatSelect: () => void
+interface ChatNavbarProps extends AppShellNavbarProps {
+    onSelect: () => void
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onChatSelect }) => {
+const ChatNavbar: React.FC<ChatNavbarProps> = ({ onSelect }) => {
     const { chatId } = useParams()
     const parsedChatId = chatId ? Number(chatId) : null
 
     const { chats } = useAppSelector(state => state.chatsReducer)
 
-    const { handleDelete, handleSelect } = useChatList(parsedChatId, onChatSelect)
+    const { handleDelete, handleSelect } = useChatList(parsedChatId, onSelect)
 
     return (
         <Stack p={{ base: 'md', sm: 'lg' }}>
@@ -56,4 +56,4 @@ const Navbar: React.FC<NavbarProps> = ({ onChatSelect }) => {
     )
 }
 
-export default Navbar
+export default ChatNavbar

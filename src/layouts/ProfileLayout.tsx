@@ -3,10 +3,9 @@ import { IconLogout } from "@tabler/icons-react"
 import { logout as logoutApi } from '@/features/auth/api/auth'
 import { useAppDispatch } from "@/hooks/redux"
 import { resetUser } from "@/features/user/lib/userSlice"
-import UserProfile from "@/features/user/components/UserProfile"
-import { useNavigate } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 
-const UserProfileLayout = () => {
+const ProfileLayout = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
 
@@ -33,9 +32,9 @@ const UserProfileLayout = () => {
                 </Flex>
             </Portal>
 
-            <UserProfile />
+            <Outlet />
         </>
     )
 }
 
-export default UserProfileLayout
+export default ProfileLayout

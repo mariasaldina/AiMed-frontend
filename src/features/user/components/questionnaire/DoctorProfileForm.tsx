@@ -1,14 +1,14 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/redux"
-import { Button, Group, Radio, Stack, TextInput } from "@mantine/core"
+import { MultiSelect, TextInput } from "@mantine/core"
 import { DateInput } from '@mantine/dates'
 import { useForm } from "@mantine/form"
-import type { DoctorProfile } from "../types/user"
-import { useEffect } from "react"
-import { editDoctorProfile } from "../api/user"
+import { useEffect, useState } from "react"
 import * as z from "zod"
 import { zod4Resolver } from "mantine-form-zod-resolver"
-import { updateDoctorProfile } from "../lib/userSlice"
-import FormTemplate from "./FormTemplate"
+import type { DoctorProfile, Specialization } from "../../types/user"
+import { editDoctorProfile, getSpecializationsList } from "../../api/user"
+import { updateDoctorProfile } from "../../lib/userSlice"
+import FormTemplate from "../FormTemplate"
 
 interface DoctorProfileFormProps {
     isEditing: boolean,
@@ -16,14 +16,14 @@ interface DoctorProfileFormProps {
 }
 
 const formSchema = z.object({
-    address: z.string(),
-    education: z.string(),
-    description: z.string(),
+    address: z.string().min(1, 'Обязательное поле'),
+    education: z.string().min(1, 'Обязательное поле'),
+    description: z.string().min(1, 'Обязательное поле'),
     practiceStartDate: z.coerce.date(),
-    license: z.string(),
+    license: z.string().min(1, 'Обязательное поле'),
     licenseIssueDate: z.coerce.date(),
     licenseExpiryDate: z.coerce.date(),
-    specializationIds: z.array(z.number())
+    specializationIds: z.array(z.number()).min(1, 'Укажите хотя бы 1 специальность')
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -34,6 +34,23 @@ const DoctorProfileForm: React.FC<DoctorProfileFormProps> = ({ isEditing, onCanc
 
     if (user?.role !== 'DOCTOR') return null
     const doctorProfile = user.profile as DoctorProfile
+
+    const [specializations, setSpecializations] = useState<Specialization[]>([])
+
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const data = await getSpecializationsList()
+                setSpecializations(data)
+            } catch (e) {
+                setSpecializations([])
+                console.log(e)
+            } finally {
+            }
+        }
+
+        load()
+    }, [])
 
     const form = useForm<FormValues>({
         initialValues: {
@@ -64,6 +81,7 @@ const DoctorProfileForm: React.FC<DoctorProfileFormProps> = ({ isEditing, onCanc
 
     const onSubmit = async (profile: FormValues) => {
         try {
+            console.log(profile)
             const updatedProfile = await editDoctorProfile(profile)
             dispatch(updateDoctorProfile(updatedProfile))
             onCancel()
@@ -95,13 +113,44 @@ const DoctorProfileForm: React.FC<DoctorProfileFormProps> = ({ isEditing, onCanc
                 placeholder="навыки, компетенции и т.п."
                 label="Описание"
                 readOnly={!isEditing}
-                {...form.getInputProps('address')}
+                {...form.getInputProps('description')}
             />
             <DateInput
-                placeholder="дата"
+                placeholder=""
                 label="Дата начала практики"
                 readOnly={!isEditing}
                 {...form.getInputProps('practiceStartDate')}
+            />
+            <TextInput
+                placeholder=""
+                label="Лицензия"
+                readOnly={!isEditing}
+                {...form.getInputProps('license')}
+            />
+            <DateInput
+                placeholder=""
+                label="Дата выдачи лицензии"
+                readOnly={!isEditing}
+                {...form.getInputProps('licenseIssueDate')}
+            />
+            <DateInput
+                placeholder=""
+                label="Дата окончания действия лицензии"
+                readOnly={!isEditing}
+                {...form.getInputProps('licenseExpiryDate')}
+            />
+            <MultiSelect
+                label="Медицинские специализации"
+                placeholder="Выберите специализацию"
+                searchable
+                clearable
+                nothingFoundMessage="Специализация не найдена"
+                readOnly={!isEditing}
+                data={specializations.map(s => ({
+                    value: s.id,
+                    label: s.name
+                }))}
+                {...form.getInputProps('specializationIds')}
             />
         </FormTemplate>
     )

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { User, PatientProfile, DoctorProfile } from "../types/user";
+import type { User, PatientProfile, DoctorProfile, Contacts } from "../types/user";
 import { getUser as getUserApi } from '@/features/user/api/user'
 
 interface UserSliceType {
@@ -27,6 +27,11 @@ const userSlice = createSlice({
             if (state.user?.role === 'DOCTOR') {
                 state.user.profile = action.payload
             }
+        },
+        setContacts: (state, action: PayloadAction<Contacts>) => {
+            if (state.user) {
+                state.user.contacts = action.payload
+            }
         }
     },
     extraReducers: builder => {
@@ -44,6 +49,6 @@ export const getUser = createAsyncThunk('user/getUser',
     }
 )
 
-export const { setUser, resetUser, updatePatientProfile, updateDoctorProfile } = userSlice.actions
+export const { setUser, resetUser, updatePatientProfile, updateDoctorProfile, setContacts } = userSlice.actions
 
 export default userSlice.reducer

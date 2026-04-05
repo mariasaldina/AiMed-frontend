@@ -7,7 +7,8 @@ export interface User {
     username: string,
     fullName: string,
     role: UserRole,
-    profile: PatientProfile | DoctorProfile
+    profile: PatientProfile | DoctorProfile,
+    contacts: Contacts
 }
 
 export interface PatientProfile {
@@ -26,4 +27,15 @@ export interface DoctorProfile {
     licenseIssueDate: Date,
     licenseExpiryDate: Date,
     specializationIds: number[]
+}
+
+export interface Specialization {
+    id: number,
+    name: string,
+}
+
+export interface Contacts {
+    email: string,
+    phone: string,
+    messenger: string,
 }

@@ -1,4 +1,4 @@
-import { Button, ScrollArea, Stack } from "@mantine/core"
+import { Box, Button, ScrollArea, Stack } from "@mantine/core"
 import { useEffect, type ReactNode } from "react"
 
 interface FormTemplateProps {
@@ -15,15 +15,17 @@ const FormTemplate: React.FC<FormTemplateProps> = ({ isEditing, onCancel, resetF
     }, [])
 
     return (
-        <form onSubmit={onSubmit}>
-            <Stack miw={{ base: 280, sm: 500 }}>
-                <ScrollArea
-                    h={"100%"}
-                    type="auto"
-                    offsetScrollbars
-                >
-                    {children}
-                </ScrollArea>
+        <form onSubmit={onSubmit} style={{ height: '100%' }}>
+            <Stack h={'100%'}>
+                <Box flex={1} mih={0}>
+                    <ScrollArea
+                        h={"100%"}
+                        type="auto"
+                        offsetScrollbars
+                    >
+                        {children}
+                    </ScrollArea>
+                </Box>
 
                 {isEditing ?
                     <Stack>

@@ -7,20 +7,29 @@ import AppRouter from "./AppRouter"
 import { MantineProvider } from "@mantine/core"
 import theme from "@/lib/theme"
 import AuthWrapper from "./AuthWrapper"
+import { DatesProvider } from "@mantine/dates"
 
 const App = () => {
     return (
         <Provider store={store}>
             <MantineProvider theme={theme}>
-                <BrowserRouter>
-                    <UserInitializer>
-                        <CommonWrapper>
-                            <AuthWrapper>
-                                <AppRouter />
-                            </AuthWrapper>
-                        </CommonWrapper>
-                    </UserInitializer>
-                </BrowserRouter>
+                <DatesProvider
+                    settings={{
+                        locale: 'ru',
+                        firstDayOfWeek: 1,
+                        weekendDays: [0, 6]
+                    }}
+                >
+                    <BrowserRouter>
+                        <UserInitializer>
+                            <CommonWrapper>
+                                <AuthWrapper>
+                                    <AppRouter />
+                                </AuthWrapper>
+                            </CommonWrapper>
+                        </UserInitializer>
+                    </BrowserRouter>
+                </DatesProvider>
             </MantineProvider>
         </Provider>
     )
