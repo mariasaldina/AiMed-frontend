@@ -58,8 +58,6 @@ const SignUpForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
         validate: zod4Resolver(signUpSchema)
     })
 
-    const [formError, setFormError] = useState<string | null>(null)
-
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
@@ -68,9 +66,9 @@ const SignUpForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
             await signUp(data)
             const user = await getUser()
             dispatch(setUser(user))
-            navigate('/chats')
-        } catch (err: any) {
-            setFormError(err.message)
+            navigate('/home')
+        } catch (e: any) {
+            console.log(e)
         }
     }
 
@@ -81,7 +79,6 @@ const SignUpForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
                     <Stack>
                         <TextInput
                             label="Username"
-                            onFocus={() => setFormError(null)}
                             {...form.getInputProps('username')}
                             key={form.key('username')}
                         />

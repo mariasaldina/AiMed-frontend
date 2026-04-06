@@ -1,10 +1,8 @@
 import * as z from 'zod';
 import { useNavigate } from "react-router-dom";
 import Form from "@/ui/Form";
-import { useState } from "react";
 import { login } from "@/features/auth/api/auth";
 import { setUser } from "@/features/user/lib/userSlice";
-import { stopLoading } from "@/features/settingsSlice/settingsSlice";
 import { Button, PasswordInput, TextInput } from "@mantine/core";
 import { useAppDispatch } from "@/hooks/redux";
 import { getUser } from "@/features/user/api/user";
@@ -30,18 +28,14 @@ const LoginForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
-    const [formError, setFormError] = useState<string | null>(null)
-
     const onSubmit = async (credentials: LoginFormValues) => {
         try {
             await login(credentials)
             const user = await getUser()
             dispatch(setUser(user))
-            navigate('/chats')
+            navigate('/home')
         } catch (e: any) {
-            setFormError(e.message)
-        } finally {
-            dispatch(stopLoading())
+            console.log(e)
         }
     }
 
@@ -49,7 +43,6 @@ const LoginForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
         <Form onSubmit={form.onSubmit(onSubmit)} title="Войти">
             <TextInput
                 label="Username"
-                onFocus={() => setFormError(null)}
                 {...form.getInputProps('username')}
             />
             <PasswordInput

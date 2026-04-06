@@ -7,7 +7,7 @@ const EditableTemplate = () => {
     const [isEditing, { open, close }] = useDisclosure(false)
 
     return (
-        <Center p={{ base: 'lg', sm: 'xl' }} h={'100%'}>
+        <Center px={{ base: 'lg', sm: '25%' }} py={{ base: 'lg', sm: 'xl' }} h={'100%'}>
             <Stack h={'100%'} w={'100%'}>
                 <Button
                     style={{ alignSelf: 'flex-end' }}

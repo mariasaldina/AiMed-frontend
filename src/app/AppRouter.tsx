@@ -5,11 +5,11 @@ import ReverseAuthGuard from "./ProtectedAuthRoute"
 import AppLayout from "@/layouts/AppLayout"
 import LandingLayout from "@/layouts/LandingLayout"
 import LoginLayout from "@/layouts/LoginLayout"
-import ProfileLayout from "@/layouts/ProfileLayout"
-import ChatLayout from "@/layouts/ChatLayout"
 import EditableTemplate from "@/ui/EditableTemplate"
 import Contacts from "@/features/user/components/Contacts"
 import Questionnaire from "@/features/user/components/questionnaire/Questionnaire"
+import Notifications from "@/features/notifications/components/Notifications"
+import Chat from "@/features/chat/components/Chat"
 
 const AppRouter = () => {
     return (
@@ -20,19 +20,21 @@ const AppRouter = () => {
                     <Route path="/auth" element={<LoginLayout />} />
                 </Route>
 
-                <Route path="/" element={<LandingLayout />} />
+                <Route path="/home" element={<LandingLayout />} />
 
                 <Route path="/chats" element={<ChatFetcher />}>
-                    <Route path=":chatId?" element={<ChatLayout />} />
+                    <Route path=":chatId?" element={<Chat />} />
                 </Route>
 
-                <Route path="/profile" element={<ProfileLayout />}>
+                <Route path='/profile'>
                     <Route element={<EditableTemplate />}>
+                        <Route index element={<Questionnaire />} />
                         <Route path='questionnaire' element={<Questionnaire />} />
                         <Route path='contacts' element={<Contacts />} />
                     </Route>
-                    
                 </Route>
+
+                <Route path="/notifications" element={<Notifications />} />
             </Route>
 
             <Route path="*" element={<NotFoundPage />} />

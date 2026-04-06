@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/hooks/redux"
 import { addChat } from "@/features/chat/lib/chatSlice"
 import { useForm } from "@mantine/form"
 import { zod4Resolver } from "mantine-form-zod-resolver"
+import { IconSparkles } from "@tabler/icons-react"
 
 const createChatSchema = z.object({
     title: z.string().min(1, 'Введите название чата')
@@ -16,14 +17,12 @@ type CreateChatModalValues = z.infer<typeof createChatSchema>
 
 const CreateChatModal = () => {
     const [isOpen, setOpen] = useState(false)
-    const [formError, setFormError] = useState<string | null>(null)
     const form = useForm({
         initialValues: { title: '' },
         validate: zod4Resolver(createChatSchema)
     })
     
     const navigate = useNavigate()
-
     const dispatch = useAppDispatch()
 
     const onSubmit = async (properties: CreateChatModalValues) => {
@@ -34,13 +33,12 @@ const CreateChatModal = () => {
             form.reset()
             setOpen(false)
         } catch (e) {
-            setFormError('Не удалось создать чат')
             console.log(e)
         }
     }
 
     return (
-        <div>
+        <>
             <Modal
                 opened={isOpen}
                 onClose={() => setOpen(false)}
@@ -52,7 +50,6 @@ const CreateChatModal = () => {
                     <Flex direction={'column'} gap={{ base: 'md', sm: 'lg' }}>
                         <TextInput
                             label={"Название чата"}
-                            onFocus={() => setFormError(null)}
                             {...form.getInputProps('title')}
                         />
                         <Button type="submit">Создать чат</Button>
@@ -60,10 +57,10 @@ const CreateChatModal = () => {
                 </form>
             </Modal>
 
-            <Button type="button" onClick={() => setOpen(true)}>
+            <Button type="button" onClick={() => setOpen(true)} rightSection={<IconSparkles />} variant="gradient">
                 Начать новый чат
             </Button>
-        </div>
+        </>
     )
 }
 

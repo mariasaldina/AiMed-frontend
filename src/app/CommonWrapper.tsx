@@ -5,7 +5,7 @@ import type { ReactNode } from "react"
 const CommonWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { loading } = useAppSelector(state => state.settingsReducer)
     
-    if (loading) return <Center h={'100dvh'}><Loader /></Center>
+    if (loading['user/getUser']) return <Center h={'100dvh'}><Loader /></Center>
 
     return children
 }

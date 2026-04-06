@@ -1,27 +1,34 @@
-import { Button, Flex, Input, Textarea } from "@mantine/core"
+import { useAppSelector } from "@/hooks/redux"
+import { Button, Flex, Textarea } from "@mantine/core"
+import useMessageInput from "../hooks/useMessageInput"
+import { useParams } from "react-router-dom"
 
-interface MessageInputProps {
-    value: string,
-    onChange: (newValue: string) => void,
-    onSend: () => void,
-    findDoctors: () => void,
-    disabled: boolean
-}
+const MessageInput = () => {
+    const { chatId } = useParams()
+    const parsedChatId = chatId ? Number(chatId) : null
 
-const MessageInput: React.FC<MessageInputProps> = ({ value, onChange, onSend, findDoctors, disabled }) => {
+    const { sending } = useAppSelector(state => state.chatMessagesReducer)
+    const {
+        content,
+        setContent,
+        handleSend,
+        findDoctors
+    } = useMessageInput(parsedChatId)
+
     return (
-        <form onSubmit={e => { e.preventDefault(); onSend(); }}>
+        <form onSubmit={e => { e.preventDefault(); handleSend(); }} style={{ width: '100%'}}>
             <Flex
                 align={'stretch'}
-                gap={{ base: 'md', sm: 'lg' }}
-                px={{ base: 'md', sm: 'xl' }}
-                py={{ base: 'md', sm: 'lg' }}
+                gap={{ base: 'sm', sm: 'md' }}
+                p={{ base: 'lg', sm: 'xl' }}
+                direction={{ base: 'column' , sm: 'row' }}
+                w={'100%'}
             >
                 <Textarea
-                    value={value}
-                    onChange={e => onChange(e.target.value)}
+                    value={content}
+                    onChange={e => setContent(e.target.value)}
                     placeholder="Опишите свои симптомы"
-                    disabled={disabled}
+                    disabled={sending}
                     flex={1}
                     minRows={3}
                     maxRows={5}
@@ -29,15 +36,15 @@ const MessageInput: React.FC<MessageInputProps> = ({ value, onChange, onSend, fi
                 />
                 <Flex
                     direction={'column'}
-                    gap={{ base: 'md', sm: 'sm' }}
+                    gap={{ base: 'sm' }}
                 >
-                    <Button type="submit" disabled={disabled} style={{ flexShrink: 0 }}>
+                    <Button type="submit" disabled={sending} style={{ flexShrink: 0 }}>
                         Отправить
                     </Button>
                     <Button
                         type="button"
                         onClick={findDoctors}
-                        disabled={disabled}
+                        disabled={sending}
                         style={{ flexShrink: 0 }}
                     >
                         Найти специалиста

@@ -1,47 +1,14 @@
 import type React from 'react'
-import type { Doctor } from '../types/message'
-import { Badge, Button, Flex, Paper, Stack, Text } from '@mantine/core'
+import type { Doctor } from '../types/chat'
+import { Badge, Flex, Paper, Stack, Text } from '@mantine/core'
+import { getExperience } from '../utils/experienceFormatter'
+import InviteDoctorModal from '@/features/chat/components/InviteDoctorModal'
 
 interface DoctorSuggestionsProps {
-    doctors: Doctor[],
-    getContacts: (doctorId: number) => void
+    doctors: Doctor[]
 }
 
-const getExperience = (practiceStartDate: Date): string => {
-    const now = new Date()
-    let years = now.getFullYear() - practiceStartDate.getFullYear()
-
-    const hasNotHadAnniversaryYet =
-        now.getMonth() < practiceStartDate.getMonth() ||
-        (
-            now.getMonth() === practiceStartDate.getMonth() &&
-            now.getDate() < practiceStartDate.getDate()
-        )
-
-    if (hasNotHadAnniversaryYet) {
-        years -= 1
-    }
-
-    if (years <= 0) {
-        return 'Стаж менее 1 года'
-    }
-
-    if (years % 10 === 1 && years % 100 !== 11) {
-        return `Стаж ${years} год`
-    }
-
-    if (
-        years % 10 >= 2 &&
-        years % 10 <= 4 &&
-        !(years % 100 >= 12 && years % 100 <= 14)
-    ) {
-        return `Стаж ${years} года`
-    }
-
-    return `Стаж ${years} лет`
-}
-
-const DoctorSuggestions: React.FC<DoctorSuggestionsProps> = ({ doctors, getContacts }) => {
+const DoctorSuggestions: React.FC<DoctorSuggestionsProps> = ({ doctors }) => {
     return (
         <Stack gap={5} style={{ alignSelf: 'flex-start' }} maw={{ base: 500, sm: 700 }}>
             <Text fw={800}>Подходящие специалисты</Text>
@@ -59,7 +26,7 @@ const DoctorSuggestions: React.FC<DoctorSuggestionsProps> = ({ doctors, getConta
                                 <Text fw={700}>
                                     {d.fullName}
                                 </Text>
-                                <Text c="blue" size='sm'>{getExperience(d.practiceStartDate)}</Text>
+                                <Text c="blue" size='sm'>{getExperience(new Date(d.practiceStartDate))}</Text>
 
                                 {d.specializations.length > 0 && (
                                     <Stack>
@@ -87,13 +54,8 @@ const DoctorSuggestions: React.FC<DoctorSuggestionsProps> = ({ doctors, getConta
                                     <Text size='md'>{d.description}</Text>
                                 )}
                             </Stack>
-                            <Button
-                                type="button"
-                                onClick={(e) => { e.stopPropagation(); getContacts(Number(d.userId)); }}
-                                variant='gradient'
-                            >
-                                Связаться
-                            </Button>
+                            
+                            <InviteDoctorModal doctorId={parseInt(d.userId)} />
                         </Flex>
                     </Paper>
                 ))}

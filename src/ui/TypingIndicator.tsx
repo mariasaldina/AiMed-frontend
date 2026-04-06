@@ -3,13 +3,14 @@ import { Loader, Paper } from '@mantine/core'
 const TypingIndicator: React.FC = () => {
     return (
         <Paper
-            bg="gray.1"
+            bg="gray.3"
             py={8}
             px={12}
             radius="xl"
-            style={{ alignSelf: 'flex-start' }}
+            style={{ justifySelf: 'center' }}
+            w={90}
         >
-            <Loader color="gray.5" size="md" type="dots" />
+            <Loader color="gray.5" size="md" type="dots" style={{ justifySelf: 'center' }} />
         </Paper>
     )
 }

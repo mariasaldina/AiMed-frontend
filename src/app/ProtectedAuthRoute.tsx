@@ -5,7 +5,7 @@ const ReverseAuthGuard = () => {
     const { user } = useAppSelector(state => state.userReducer)
 
     if (user) {
-        return <Navigate to="/chats" replace />
+        return <Navigate to="/home" replace />
     }
 
     return <Outlet />;

@@ -1,5 +1,5 @@
 import type React from "react"
-import type { UrgencyStatus } from "../types/message"
+import type { UrgencyStatus } from "../types/chat"
 import { Divider, Group, List, Paper, Stack, Text } from "@mantine/core"
 import { IconAlertHexagonFilled, IconClipboardListFilled, IconStethoscope, IconZoomQuestionFilled } from "@tabler/icons-react"
 

@@ -46,6 +46,7 @@ const Contacts = () => {
         try {
             await updateContacts(contacts)
             dispatch(setContacts(contacts))
+            close()
         } catch (e) {
             console.log(e)
         }

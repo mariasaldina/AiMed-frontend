@@ -6,7 +6,7 @@ const AuthWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { user } = useAppSelector(state => state.userReducer)
     const location = useLocation()
 
-    const publicPaths = ['/auth']
+    const publicPaths = ['/auth', '/home']
     const isPublicPath = publicPaths.includes(location.pathname)
 
     if (!user && !isPublicPath) {

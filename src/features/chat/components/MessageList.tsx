@@ -1,16 +1,13 @@
-import type { Message } from "../types/message"
-import AssistantMessage from "./AssitantMessage"
-import UserMessage from "./UserMessage"
-import DoctorSuggestions from "./DoctorSuggestions"
+import AssistantMessage from "../ui/AssitantMessage"
+import UserMessage from "../ui/UserMessage"
+import DoctorSuggestions from "../ui/DoctorSuggestions"
 import { uuidv4 } from "zod"
 import { Flex } from "@mantine/core"
+import InvitationMessage from "../ui/InvitationMessage"
+import { useAppSelector } from "@/hooks/redux"
 
-interface MessageListProps {
-    messages: Message[],
-    getContacts: (doctorId: number) => void
-}
-
-const MessageList: React.FC<MessageListProps> = ({ messages, getContacts }) => {
+const MessageList = () => {
+    const { messages } = useAppSelector(state => state.chatMessagesReducer)
 
     return (
         <Flex
@@ -31,7 +28,9 @@ const MessageList: React.FC<MessageListProps> = ({ messages, getContacts }) => {
                     urgency={m.urgency}
                 />
                 : m.kind === "doctorSuggestions"
-                ? <DoctorSuggestions key={m.id} doctors={m.doctors} getContacts={getContacts}/>
+                ? <DoctorSuggestions key={m.id} doctors={m.doctors} />
+                : m.kind === "invitation"
+                ? <InvitationMessage key={m.id} content={m.content} />
                 : <div key={String(uuidv4())}/>
             )}
         </Flex>

@@ -18,7 +18,7 @@ const chatsSlice = createSlice({
             state.chats.unshift(action.payload)
         },
         removeChat: (state, action: PayloadAction<number>) => {
-            state.chats.filter(c => c.id !== action.payload)
+            state.chats = state.chats.filter(c => c.id !== action.payload)
         }
     }
 })

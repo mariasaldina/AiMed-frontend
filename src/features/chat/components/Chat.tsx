@@ -3,25 +3,18 @@ import MessageList from "./MessageList"
 import MessageInput from "./MessageInput"
 import TypingIndicator from "@/ui/TypingIndicator"
 import { Box, Center, Flex, Loader, ScrollArea } from "@mantine/core"
-import useChat from "../hooks/useChat"
 import { useScrollIntoView } from "@mantine/hooks"
 import { useParams } from "react-router-dom"
+import { useAppSelector } from "@/hooks/redux"
+import { useChatMessages } from "../hooks/useChatMessages"
 
 const Chat = () => {
+    const { messages, loading, sending } = useAppSelector(state => state.chatMessagesReducer)
+
     const { chatId } = useParams()
     const parsedChatId = chatId ? Number(chatId) : null
-    const hasChat = Boolean(parsedChatId)
 
-    const {
-        messages,
-        messageListLoading,
-        messageSending,
-        inputValue,
-        setInputValue,
-        handleSend,
-        findDoctors,
-        getContacts
-    } = useChat(parsedChatId)
+    useChatMessages(parsedChatId)
 
     const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({
         offset: 0,
@@ -30,38 +23,32 @@ const Chat = () => {
 
     useEffect(() => {
         scrollIntoView({ alignment: 'end' })
-    }, [messages, messageSending])
+    }, [messages, sending])
 
     return (
-        <Flex h={"100%"} direction={"column"}>
-            {messageListLoading ?
+        <Flex
+            h={"100%"}
+            direction={"column"}
+            align={'center'}
+            px={{ base: 'lg', sm: '15%' }}
+        >
+            {loading ?
                 <Center h={'100%'}><Loader /></Center> :
-                <Box flex={1} mih={0}>
+                <Box flex={1} mih={0} w='100%'>
                     <ScrollArea
                         h={"100%"}
                         type="auto"
                         viewportRef={scrollableRef}
                         offsetScrollbars
                     >
-                        <MessageList
-                            messages={messages}
-                            getContacts={getContacts}
-                        />
-                        {messageSending ? <TypingIndicator /> : <></>}
+                        <MessageList />
+                        {sending ? <Box p={{ base: 'md', sm: 'xl' }}><TypingIndicator /></Box> : <></>}
 
                         <div ref={targetRef} style={{ height: 1 }} />
                     </ScrollArea>
                 </Box>
             }
-            <Box>
-                <MessageInput
-                    value={inputValue}
-                    onChange={setInputValue}
-                    onSend={handleSend}
-                    findDoctors={findDoctors}
-                    disabled={messageSending}
-                />
-            </Box>
+            {parsedChatId && <MessageInput />}
         </Flex>
     )
 }

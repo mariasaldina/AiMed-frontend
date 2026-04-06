@@ -1,5 +1,5 @@
 import api from '@/lib/axios'
-import type { Message, MessageDto } from '../types/message'
+import type { Message, MessageDto } from '../types/chat'
 import { mapMessage } from '../utils/messageMapper'
 import type { Chat } from '../types/chat'
 
@@ -46,6 +46,7 @@ export const findDoctorsApi = async (chatId: number): Promise<Message> => {
     return mapMessage(data)
 }
 
-export const getContactsApi = async (chatId: number, doctorId: number) => {
-    await api.post<MessageDto>(`/chat/${chatId}/doctors/${doctorId}/contacts`)
+export const inviteDoctor = async (chatId: number, doctorId: number, content: string) => {
+    const { data } = await api.post<MessageDto>('/notifications/invite', { chatId, doctorId, content })
+    return mapMessage(data)
 }

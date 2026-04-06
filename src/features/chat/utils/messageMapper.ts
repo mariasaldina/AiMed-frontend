@@ -1,11 +1,11 @@
-import type { Doctor, Message, MessageDto } from "@/features/chat/types/message"
+import type { Doctor, Message, MessageDto } from "@/features/chat/types/chat"
 
 export function mapMessage(dto: MessageDto): Message {
     if (dto.type === 'USER') {
         return {
             kind: 'user',
             id: String(dto.id),
-            createdAt: new Date(dto.createdAt),
+            createdAt: dto.createdAt,
             content: dto.userPayload!.content,
         }
     }
@@ -14,7 +14,7 @@ export function mapMessage(dto: MessageDto): Message {
         return {
             kind: 'assistant',
             id: String(dto.id),
-            createdAt: new Date(dto.createdAt),
+            createdAt: dto.createdAt,
             possibleCauses: dto.assistantPayload!.possibleCauses,
             recommendations: dto.assistantPayload!.recommendations,
             urgency: dto.assistantPayload!.urgency,
@@ -26,7 +26,7 @@ export function mapMessage(dto: MessageDto): Message {
         return {
             kind: 'doctorSuggestions',
             id: String(dto.id),
-            createdAt: new Date(dto.createdAt),
+            createdAt: dto.createdAt,
             doctors: dto.doctorSuggestionsPayload!.doctors.map((doctor): Doctor => ({
                 userId: String(doctor.userId),
                 fullName: doctor.fullName,
@@ -34,8 +34,18 @@ export function mapMessage(dto: MessageDto): Message {
                 address: doctor.address,
                 education: doctor.education,
                 description: doctor.description,
-                practiceStartDate: new Date(doctor.practiceStartDate),
+                practiceStartDate: doctor.practiceStartDate,
             })),
+        }
+    }
+
+    if (dto.type === 'INVITATION') {
+        return {
+            kind: 'invitation',
+            id: String(dto.id),
+            createdAt: dto.createdAt,
+            doctorsFullName: dto.invitationPayload!.doctorData.fullName,
+            content: dto.invitationPayload!.content
         }
     }
 
