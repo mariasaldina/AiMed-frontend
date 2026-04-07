@@ -7,7 +7,8 @@ const MessageInput = () => {
     const { chatId } = useParams()
     const parsedChatId = chatId ? Number(chatId) : null
 
-    const { sending } = useAppSelector(state => state.chatMessagesReducer)
+    const loading = useAppSelector(state => state.settingsReducer.loading)
+    const sending = loading['chatMessages/sendMessage'] || loading['chatMessages/findDoctors']
     const {
         content,
         setContent,

@@ -3,12 +3,10 @@ import type { Message } from "../types/chat";
 import { findDoctorsApi, getMessages, sendMessage } from "../api/chatApi";
 
 interface ChatMessagesSliceType {
-    messages: Message[],
-    loading: boolean,
-    sending: boolean
+    messages: Message[]
 }
 
-const initialState: ChatMessagesSliceType = { messages: [], loading: false, sending: false }
+const initialState: ChatMessagesSliceType = { messages: [] }
 
 const chatMessagesSlice = createSlice({
     name: 'chatMessages',
@@ -29,35 +27,14 @@ const chatMessagesSlice = createSlice({
                         ? action.payload.messages
                         : [m]
                 )
-                state.sending = false
-            })
-            .addCase(sendMessageThunk.pending, state => {
-                state.sending = true
-            })
-            .addCase(sendMessageThunk.rejected, state => {
-                state.sending = false
             })
 
             .addCase(loadMessagesThunk.fulfilled, (state, action) => {
                 state.messages = action.payload
-                state.loading = false
-            })
-            .addCase(loadMessagesThunk.pending, state => {
-                state.loading = true
-            })
-            .addCase(loadMessagesThunk.rejected, state => {
-                state.loading = false
             })
 
             .addCase(findDoctorsThunk.fulfilled, (state, action) => {
                 state.messages.push(action.payload)
-                state.sending = false
-            })
-            .addCase(findDoctorsThunk.pending, state => {
-                state.sending = true
-            })
-            .addCase(findDoctorsThunk.rejected, state => {
-                state.sending = false
             })
     }
 })

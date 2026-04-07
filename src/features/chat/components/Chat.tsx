@@ -9,7 +9,9 @@ import { useAppSelector } from "@/hooks/redux"
 import { useChatMessages } from "../hooks/useChatMessages"
 
 const Chat = () => {
-    const { messages, loading, sending } = useAppSelector(state => state.chatMessagesReducer)
+    const { messages } = useAppSelector(state => state.chatMessagesReducer)
+    const loading = useAppSelector(state => state.settingsReducer.loading)
+    const sending = loading['chatMessages/sendMessage'] || loading['chatMessages/findDoctors']
 
     const { chatId } = useParams()
     const parsedChatId = chatId ? Number(chatId) : null
@@ -32,7 +34,7 @@ const Chat = () => {
             align={'center'}
             px={{ base: 'lg', sm: '15%' }}
         >
-            {loading ?
+            {loading['chatMessages/loadMessages'] ?
                 <Center h={'100%'}><Loader /></Center> :
                 <Box flex={1} mih={0} w='100%'>
                     <ScrollArea

@@ -30,7 +30,7 @@ const MessageList = () => {
                 : m.kind === "doctorSuggestions"
                 ? <DoctorSuggestions key={m.id} doctors={m.doctors} />
                 : m.kind === "invitation"
-                ? <InvitationMessage key={m.id} content={m.content} />
+                ? <InvitationMessage key={m.id} content={m.content} fullName={m.doctorsFullName} />
                 : <div key={String(uuidv4())}/>
             )}
         </Flex>

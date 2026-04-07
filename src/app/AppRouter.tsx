@@ -8,8 +8,9 @@ import LoginLayout from "@/layouts/LoginLayout"
 import EditableTemplate from "@/ui/EditableTemplate"
 import Contacts from "@/features/user/components/Contacts"
 import Questionnaire from "@/features/user/components/questionnaire/Questionnaire"
-import Notifications from "@/features/notifications/components/Notifications"
+import NotificationList from "@/features/notifications/components/NotificationList"
 import Chat from "@/features/chat/components/Chat"
+import RoleGuard from "./RoleGuard"
 
 const AppRouter = () => {
     return (
@@ -22,8 +23,10 @@ const AppRouter = () => {
 
                 <Route path="/home" element={<LandingLayout />} />
 
-                <Route path="/chats" element={<ChatFetcher />}>
-                    <Route path=":chatId?" element={<Chat />} />
+                <Route element={<RoleGuard role='PATIENT' />}>
+                    <Route path="/chats" element={<ChatFetcher />}>
+                        <Route path=":chatId?" element={<Chat />} />
+                    </Route>
                 </Route>
 
                 <Route path='/profile'>
@@ -34,7 +37,7 @@ const AppRouter = () => {
                     </Route>
                 </Route>
 
-                <Route path="/notifications" element={<Notifications />} />
+                <Route path="/notifications" element={<NotificationList />} />
             </Route>
 
             <Route path="*" element={<NotFoundPage />} />

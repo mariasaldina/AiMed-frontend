@@ -1,27 +1,33 @@
 import type React from "react"
-import { Paper, Text } from "@mantine/core"
+import { Blockquote, Paper, Stack, Text } from "@mantine/core"
+import { IconQuoteFilled } from "@tabler/icons-react"
 
-const InvitationMessage: React.FC<{ content: string }> = ({ content }) => {
+const InvitationMessage: React.FC<{ content: string, fullName: string }> = ({ content, fullName }) => {
     return (
         <Paper
-            px={12}
-            py={6}
-            bg="gray.1"
+            p='lg'
+            bg="indigo.1"
             style={{
                 alignSelf: 'center',
                 borderRadius: 12,
                 maxWidth: '70%'
             }}
         >
-            <Text>
-                Вы отправили уведомление специалисту:
-            </Text>
-            <Text>
+            <Stack p={'md'}>
+                <Text>
+                    Вы отправили уведомление специалисту:
+                </Text>
+                
+                <Text style={{ alignSelf: 'center'}}>
+                    {fullName}
+                </Text>
 
-            </Text>
-            <Text>
-                {content}
-            </Text>
+                <Blockquote icon={<IconQuoteFilled />} p={'md'}>
+                    <Text>
+                        {content}
+                    </Text>
+                </Blockquote>
+            </Stack>
         </Paper>
     )
 }

@@ -28,11 +28,12 @@ const Header: React.FC<HeaderProps> = ({ navbarOpened, showNavbar, toggleNavbar 
                     label="Главная"
                     icon={<IconHome />}
                 />
-                {user && <HeaderItem
-                    to="/chats"
-                    label="Чаты"
-                    icon={<IconMessage2 />}
-                />}
+                {user && user.role === 'PATIENT' &&
+                    <HeaderItem
+                        to="/chats"
+                        label="Чаты"
+                        icon={<IconMessage2 />}
+                    />}
                 {user && <HeaderItem
                     to="/notifications"
                     label="Уведомления"
