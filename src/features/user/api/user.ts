@@ -6,14 +6,14 @@ export const getUser = async () => {
     return data
 }
 
-export const editPatientProfile = async (profile: PatientProfile) => {
-    const { data } = await api.put<{ profile: PatientProfile }>('/user/patient-questionnaire', profile)
-    return data.profile
+export const editPatientProfile = async (fullName: string, profile: PatientProfile) => {
+    const { data } = await api.put<User>('/user/patient-questionnaire', { fullName, ...profile })
+    return data
 }
 
-export const editDoctorProfile = async (profile: DoctorProfile) => {
-    const { data } = await api.put<{ profile: DoctorProfile }>('/user/doctor-questionnaire', profile)
-    return data.profile
+export const editDoctorProfile = async (fullName: string, profile: DoctorProfile) => {
+    const { data } = await api.put<User>('/user/doctor-questionnaire', { fullName, ...profile })
+    return data
 }
 
 export const getSpecializationsList = async () => {

@@ -1,4 +1,4 @@
-import { getUser } from "@/features/user/lib/userSlice"
+import { getUserThunk } from "@/features/user/lib/userSlice"
 import { useAppDispatch } from "@/hooks/redux"
 import { useEffect, type ReactNode } from "react"
 
@@ -6,7 +6,7 @@ const UserInitializer: React.FC<{ children: ReactNode }> = ({ children }) => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(getUser())
+        dispatch(getUserThunk())
     }, [])
 
     return children

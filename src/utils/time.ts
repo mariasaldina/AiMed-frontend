@@ -11,6 +11,6 @@ export const displayTime = (time: string) => {
     })
 }
 
-export const getAge = (birthdate: string | Date) => {
+export const getYears = (birthdate: string | Date) => {
     return dayjs().diff(dayjs(birthdate), 'year')
 }

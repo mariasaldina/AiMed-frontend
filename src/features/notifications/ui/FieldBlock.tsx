@@ -3,19 +3,23 @@ import type { ReactNode } from "react";
 
 interface FieldBlockProps {
     label: string;
-    children: ReactNode;
+    value?: string;
+    children?: ReactNode;
 }
 
-const FieldBlock: React.FC<FieldBlockProps> = ({ label, children }) => {
+const FieldBlock: React.FC<FieldBlockProps> = ({ label, value, children }) => {
     return (
-        <Flex gap={20} align={'center'}>
+        <Flex
+            gap={{ base: 2, sm: 20 }}
+            align={{ base: 'start', sm: 'center'}}
+            direction={{ base: 'column', 'sm': 'row'}}
+        >
             <Text size="sm" c="dark" style={{ minWidth: 150 }}>
                 {label}
             </Text>
 
-            <Text size="sm">
-                {children}
-            </Text>        
+            <Text size="sm">{value}</Text>
+            {children}    
         </Flex>
     )
 }

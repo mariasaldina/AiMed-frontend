@@ -1,9 +1,12 @@
-import { Accordion, Blockquote, Button, Group, Paper, Stack, Text } from "@mantine/core"
+import { Accordion, Blockquote, Button, Group, Text } from "@mantine/core"
 import type { DoctorNotificationType } from "../types/notifications"
-import { displayTime } from "@/utils/time"
 import PatientCard from "../ui/PatientCard"
 import { useAppDispatch } from "@/hooks/redux"
 import { notifyPatientThunk } from "../lib/notificationSlice"
+import ApprovedMessage from "../ui/ApprovedMessage"
+import RejectedMessage from "../ui/RejectedMessage"
+import NotificationCard from "../ui/NotificationCard"
+import PendingMessage from "../ui/PendingMessage"
 
 interface DoctorNotificationProps {
     notification: DoctorNotificationType
@@ -12,54 +15,62 @@ interface DoctorNotificationProps {
 const DoctorNotification: React.FC<DoctorNotificationProps> = ({ notification }) => {
     const dispatch = useAppDispatch()
 
-    const handleReject = async () => {
+    const handleApprove = async () => {
         dispatch(notifyPatientThunk({ status: 'APPROVED', notificationId: notification.id }))
     }
 
-    const handleApprove = async () => {
+    const handleReject = async () => {
         dispatch(notifyPatientThunk({ status: 'REJECTED', notificationId: notification.id }))
     }
 
+    let color;
+    switch (notification.invitationStatus) {
+        case 'APPROVED': color = 'green'; break
+        case 'REJECTED': color = 'pink'; break
+        case 'PENDING': color = 'blue'
+    }
+
     return (
-        <Paper
-            withBorder
-            p={{ base: 'sm', sm: 'md' }}
-        >
-            <Stack>
-                <Text>Вы получили приглашение к диалогу:</Text>
-                <Blockquote p={{ base: 'sm' }}>{notification.content}</Blockquote>
+        <NotificationCard status={notification.invitationStatus} createdAt={notification.createdAt}>
+            {notification.invitationStatus === 'APPROVED' &&
+                <ApprovedMessage text="Вы дали пациенту свои контакты" />}
 
-                <Accordion>
-                    <Accordion.Item value={'Детали'}>
-                        <Accordion.Control>Детали</Accordion.Control>
-                        <Accordion.Panel>
-                            <PatientCard patient={notification.patient} />
-                        </Accordion.Panel>
-                    </Accordion.Item>
-                </Accordion>
+            {notification.invitationStatus === 'REJECTED' &&
+                <RejectedMessage text="Вы отклонили приглашение" />}
 
-                {notification.invitationStatus === 'PENDING' &&
-                    <Group justify="flex-start" mt="xs">
-                        <Button
-                            variant="filled"
-                            onClick={handleApprove}
-                        >
-                            Дать контакты
-                        </Button>
+            {notification.invitationStatus === 'PENDING' &&
+                <PendingMessage text="Вы получили заявку" />}
 
-                        <Button
-                            variant='light'
-                            onClick={handleReject}
-                        >
-                            Отклонить
-                        </Button>
-                    </Group>}
+            <Blockquote p={{ base: 'sm' }} color={color}>{notification.content}</Blockquote>
 
-                <Text size="xs" c="dimmed" ta="right" mt={4}>
-                    {displayTime(notification.createdAt)}
-                </Text>
-            </Stack>
-        </Paper>
+            <Accordion>
+                <Accordion.Item value={'Детали'}>
+                    <Accordion.Control>
+                        <Text size='sm'>О пациенте</Text>
+                    </Accordion.Control>
+                    <Accordion.Panel>
+                        <PatientCard patient={notification.patient} />
+                    </Accordion.Panel>
+                </Accordion.Item>
+            </Accordion>
+
+            {notification.invitationStatus === 'PENDING' &&
+                <Group justify="flex-start" mt="xs">
+                    <Button
+                        variant="filled"
+                        onClick={handleApprove}
+                    >
+                        Дать контакты
+                    </Button>
+
+                    <Button
+                        variant='light'
+                        onClick={handleReject}
+                    >
+                        Отклонить
+                    </Button>
+                </Group>}
+        </NotificationCard>
     )
 }
 

@@ -12,7 +12,7 @@ interface FormTemplateProps {
 const FormTemplate: React.FC<FormTemplateProps> = ({ isEditing, onCancel, resetForm, onSubmit, children }) => {
     useEffect(() => {
         resetForm()
-    }, [])
+    }, [isEditing])
 
     return (
         <form onSubmit={onSubmit} style={{ height: '100%' }}>
@@ -22,6 +22,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({ isEditing, onCancel, resetF
                         h={"100%"}
                         type="auto"
                         offsetScrollbars
+                        px='sm'
                     >
                         {children}
                     </ScrollArea>

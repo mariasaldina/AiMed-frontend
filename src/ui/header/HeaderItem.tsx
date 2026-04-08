@@ -1,4 +1,4 @@
-import { Button, useMatches } from '@mantine/core'
+import { ActionIcon, Button, useMatches } from '@mantine/core'
 import type React from 'react'
 import type { ReactNode } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
@@ -14,17 +14,30 @@ const HeaderItem: React.FC<HeaderItemProps> = ({ to, icon, label }) => {
     const { pathname } = useLocation()
     const isActive = pathname === to
 
-    return (
+    if (!isMobile) return (
         <Button
             component={NavLink}
             to={to}
             variant={!isActive ? 'subtle' : 'filled'}
-            leftSection={!isMobile ? icon : null}
+            leftSection={icon}
             h='100%'
             bdrs={0}
         >
-            {!isMobile ? label : icon}
+            {label}
         </Button>
+    )
+
+    return (
+        <ActionIcon
+            component={NavLink}
+            to={to}
+            variant={!isActive ? 'subtle' : 'filled'}
+            h='100%'
+            w={60}
+            bdrs={0}
+        >
+            {icon}
+        </ActionIcon>
     )
 }
 

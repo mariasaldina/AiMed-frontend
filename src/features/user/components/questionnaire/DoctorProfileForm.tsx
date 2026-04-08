@@ -1,13 +1,13 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/redux"
-import { MultiSelect, TextInput } from "@mantine/core"
+import { MultiSelect, Textarea, TextInput } from "@mantine/core"
 import { DateInput } from '@mantine/dates'
 import { useForm } from "@mantine/form"
 import { useEffect, useState } from "react"
 import * as z from "zod"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import type { DoctorProfile, Specialization } from "../../types/user"
-import { editDoctorProfile, getSpecializationsList } from "../../api/user"
-import { updateDoctorProfile } from "../../lib/userSlice"
+import { getSpecializationsList } from "../../api/user"
+import { editDoctorProfileThunk } from "../../lib/userSlice"
 import FormTemplate from "../FormTemplate"
 
 interface DoctorProfileFormProps {
@@ -16,6 +16,7 @@ interface DoctorProfileFormProps {
 }
 
 const formSchema = z.object({
+    fullName: z.string().min(1, 'Обязательное поле'),
     address: z.string().min(1, 'Обязательное поле'),
     education: z.string().min(1, 'Обязательное поле'),
     description: z.string().min(1, 'Обязательное поле'),
@@ -54,6 +55,7 @@ const DoctorProfileForm: React.FC<DoctorProfileFormProps> = ({ isEditing, onCanc
 
     const form = useForm<FormValues>({
         initialValues: {
+            fullName: '',
             address: '',
             education: '',
             description: '',
@@ -68,6 +70,7 @@ const DoctorProfileForm: React.FC<DoctorProfileFormProps> = ({ isEditing, onCanc
 
     const resetForm = () => {
         form.setValues({
+            fullName: user.fullName || '',
             address: doctorProfile.address || '',
             education: doctorProfile.education || '',
             description: doctorProfile.description || '',
@@ -79,15 +82,9 @@ const DoctorProfileForm: React.FC<DoctorProfileFormProps> = ({ isEditing, onCanc
         })
     }
 
-    const onSubmit = async (profile: FormValues) => {
-        try {
-            console.log(profile)
-            const updatedProfile = await editDoctorProfile(profile)
-            dispatch(updateDoctorProfile(updatedProfile))
-            onCancel()
-        } catch (e) {
-            console.log(e)
-        }
+    const onSubmit = async (formData: FormValues) => {
+        dispatch(editDoctorProfileThunk({ fullName: formData.fullName, profile: formData }))
+        onCancel()
     }
 
     return (
@@ -98,22 +95,33 @@ const DoctorProfileForm: React.FC<DoctorProfileFormProps> = ({ isEditing, onCanc
             resetForm={resetForm}
         >
             <TextInput
+                placeholder="ФИО"
+                label="ФИО"
+                readOnly={!isEditing}
+                {...form.getInputProps('fullName')}
+            />
+            <TextInput
                 placeholder="адрес"
                 label="Адрес проживания"
                 readOnly={!isEditing}
                 {...form.getInputProps('address')}
             />
-            <TextInput
+            <Textarea
                 placeholder="учебное заведение, специальность"
                 label="Профильное образование"
                 readOnly={!isEditing}
                 {...form.getInputProps('education')}
+                maxRows={4}
+                autosize
             />
-            <TextInput
+            <Textarea
                 placeholder="навыки, компетенции и т.п."
                 label="Описание"
                 readOnly={!isEditing}
                 {...form.getInputProps('description')}
+                minRows={2}
+                maxRows={10}
+                autosize
             />
             <DateInput
                 placeholder=""

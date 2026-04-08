@@ -1,37 +1,28 @@
-import { Paper, Stack, Text } from "@mantine/core"
+import { Stack, Text } from "@mantine/core"
 import type { PatientCardType } from "../types/notifications"
-import { getAge } from "@/utils/time"
+import { getYears } from "@/utils/time"
 import { IconGenderFemale, IconGenderMale } from "@tabler/icons-react"
 import FieldBlock from "./FieldBlock"
 
 const PatientCard: React.FC<{ patient: PatientCardType }> = ({ patient }) => {
     return (
-        <Paper p={{ base: 'md', sm: 'lg' }} bg="blue.0" radius="md">
+        <Stack gap={'sm'}>
 
-            <Stack gap={4}>
-                <Text fw={500}>
-                    {patient.fullName}
-                </Text>
+            <Text fw={600} fz={{ base: 'md', sm: 'lg' }}>
+                {patient.fullName}
+            </Text>
 
-                <FieldBlock label={'Возраст'}>
-                    {getAge(patient.birthdate)}
-                </FieldBlock>
+            <FieldBlock label={'Адрес'} value={patient.address} />
 
-                <FieldBlock label={'Пол'}>
-                    {patient.gender === 'FEMALE' && <IconGenderFemale />}
-                    {patient.gender === 'MALE' && <IconGenderMale />}
-                </FieldBlock>
+            <FieldBlock label={'Возраст'} value={`${getYears(patient.birthdate)} лет`} />
 
-                <FieldBlock label={'История болезни'}>
-                    {patient.medicalHistory}
-                </FieldBlock>
+            <FieldBlock label={'Пол'} value={patient.gender === 'FEMALE' ? 'женский' : 'мужской'}>
+                {patient.gender === 'FEMALE' && <IconGenderFemale />}
+                {patient.gender === 'MALE' && <IconGenderMale />}
+            </FieldBlock>
 
-                <FieldBlock label={'Адрес'}>
-                    {patient.address}
-                </FieldBlock>
-            </Stack>
-
-        </Paper>
+            <FieldBlock label={'История болезни'} value={patient.medicalHistory} />
+        </Stack>
     )
 }
 

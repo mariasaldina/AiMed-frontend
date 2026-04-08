@@ -7,6 +7,5 @@ export const getNotifications = async () => {
 }
 
 export const notifyPatient = async (status: InvitationStatus, notificationId: number) => {
-    const { data } = await api.post(`/notifications/${notificationId}/answer`, { status })
-    return data
+    await api.post(`/notifications/${notificationId}/answer`, { status })
 }

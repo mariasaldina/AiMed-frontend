@@ -1,13 +1,12 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/redux"
-import { Group, Radio, TextInput } from "@mantine/core"
+import { Group, Radio, Textarea, TextInput } from "@mantine/core"
 import { DateInput } from '@mantine/dates'
 import { useForm } from "@mantine/form"
 import * as z from "zod"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import type { PatientProfile } from "../../types/user"
-import { editPatientProfile } from "../../api/user"
-import { updatePatientProfile } from "../../lib/userSlice"
 import FormTemplate from "../FormTemplate"
+import { editPatientProfileThunk } from "../../lib/userSlice"
 
 interface PatientProfileFormProps {
     isEditing: boolean,
@@ -15,6 +14,7 @@ interface PatientProfileFormProps {
 }
 
 const formSchema = z.object({
+    fullName: z.string().min(1, 'Обязательное поле'),
     address: z.string(),
     birthdate: z.coerce.date().max(new Date(), 'Невалидная дата рождения'),
     gender: z.enum(['MALE', 'FEMALE']),
@@ -32,6 +32,7 @@ const PatientProfileForm: React.FC<PatientProfileFormProps> = ({ isEditing, onCa
 
     const form = useForm<FormValues>({
         initialValues: {
+            fullName: '',
             address: '',
             birthdate: new Date(),
             gender: 'MALE',
@@ -42,6 +43,7 @@ const PatientProfileForm: React.FC<PatientProfileFormProps> = ({ isEditing, onCa
 
     const resetForm = () => {
         form.setValues({
+            fullName: user.fullName || '',
             address: patientProfile.address || '',
             birthdate: new Date(patientProfile.birthdate) || new Date(),
             gender: patientProfile.gender || 'MALE',
@@ -49,14 +51,9 @@ const PatientProfileForm: React.FC<PatientProfileFormProps> = ({ isEditing, onCa
         })
     }
 
-    const onSubmit = async (profile: FormValues) => {
-        try {
-            const updatedProfile = await editPatientProfile(profile)
-            dispatch(updatePatientProfile(updatedProfile))
-            onCancel()
-        } catch (e) {
-            console.log(e)
-        }
+    const onSubmit = async (formData: FormValues) => {
+        dispatch(editPatientProfileThunk({ fullName: formData.fullName, profile: formData }))
+        onCancel()
     }
 
     return (
@@ -66,6 +63,12 @@ const PatientProfileForm: React.FC<PatientProfileFormProps> = ({ isEditing, onCa
             onCancel={onCancel}
             resetForm={resetForm}
         >
+            <TextInput
+                placeholder="ФИО"
+                label="ФИО"
+                readOnly={!isEditing}
+                {...form.getInputProps('fullName')}
+            />
             <TextInput
                 placeholder="адрес"
                 label="Адрес проживания"
@@ -88,11 +91,14 @@ const PatientProfileForm: React.FC<PatientProfileFormProps> = ({ isEditing, onCa
                     <Radio label="женский" value="FEMALE" />
                 </Group>
             </Radio.Group>
-            <TextInput
+            <Textarea
                 placeholder="описание"
                 label="Медицинская история"
                 readOnly={!isEditing}
                 {...form.getInputProps('medicalHistory')}
+                minRows={2}
+                maxRows={10}
+                autosize
             />
         </FormTemplate>
     )

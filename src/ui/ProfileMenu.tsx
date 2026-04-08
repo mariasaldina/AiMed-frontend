@@ -1,5 +1,4 @@
-import { logout as logoutApi } from "@/features/auth/api/auth"
-import { resetUser } from "@/features/user/lib/userSlice"
+import { logoutThunk } from "@/features/user/lib/userSlice"
 import { useAppDispatch } from "@/hooks/redux"
 import { Button, Menu, useMatches } from "@mantine/core"
 import { IconLogout, IconUser } from "@tabler/icons-react"
@@ -14,14 +13,6 @@ const ProfileMenu = () => {
     const [opened, setOpened] = useState(false)
 
     const dispatch = useAppDispatch()
-    const logout = async () => {
-        try {
-            await logoutApi()
-            dispatch(resetUser())
-        } catch (e) {
-            console.log(e)
-        }
-    }
 
     return (
         <Menu
@@ -52,7 +43,7 @@ const ProfileMenu = () => {
                 </Menu.Item>
                 <Menu.Item
                     rightSection={<IconLogout />}
-                    onClick={logout}
+                    onClick={() => dispatch(logoutThunk())}
                 >
                     Выйти
                 </Menu.Item>

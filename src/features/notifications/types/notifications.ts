@@ -27,8 +27,8 @@ export interface DoctorCardType {
     education: string,
     description: string,
     practiceStartDate: Date,
-    specializationIds: number[],
-    contacts: Contacts
+    specializations: string[],
+    contacts?: Contacts
 }
 
 export interface PatientNotificationType {
@@ -37,7 +37,7 @@ export interface PatientNotificationType {
     createdAt: string;
     content: string;
     invitationStatus: InvitationStatus;
-    doctor?: DoctorCardType
+    doctor: DoctorCardType
 }
 
 export type Notification = DoctorNotificationType | PatientNotificationType

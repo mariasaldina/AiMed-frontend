@@ -4,13 +4,20 @@ import { useForm } from "@mantine/form"
 import z from "zod"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useAppDispatch, useAppSelector } from "@/hooks/redux"
-import { updateContacts } from "../api/user"
-import { setContacts } from "../lib/userSlice"
+import { updateContactsThunk } from "../lib/userSlice"
 import { TextInput } from "@mantine/core"
 
+const emailSchema = z.string().trim()
+    .transform(e => e === '' ? null : e)
+    .refine(e => e === null || z.string().email().safeParse(e).success, 'Невалидная почта')
+
+const phoneSchema = z.string().trim()
+    .transform(p => p === '' ? null : p)
+    .refine(p => p === null || /^\+?\d{10,15}$/.test(p), 'Невалидный номер телефона')
+
 const formSchema = z.object({
-    email: z.string().email('Невалидный email'),
-    phone: z.string().regex(/^\+?\d{10,15}$/, 'Невалидный номер телефона'),
+    email: emailSchema,
+    phone: phoneSchema,
     messenger: z.string()
 })
 
@@ -43,13 +50,8 @@ const Contacts = () => {
     }
 
     const onSubmit = async (contacts: FormValues) => {
-        try {
-            await updateContacts(contacts)
-            dispatch(setContacts(contacts))
-            close()
-        } catch (e) {
-            console.log(e)
-        }
+        dispatch(updateContactsThunk({ contacts }))
+        close()
     }
 
     return (
@@ -60,7 +62,7 @@ const Contacts = () => {
             onSubmit={form.onSubmit(onSubmit)}
         >
             <TextInput
-                label="Email"
+                label="Почта"
                 placeholder="example@mail.com"
                 readOnly={!isEditing}
                 {...form.getInputProps('email')}

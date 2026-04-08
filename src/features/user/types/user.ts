@@ -35,7 +35,7 @@ export interface Specialization {
 }
 
 export interface Contacts {
-    email: string,
-    phone: string,
-    messenger: string,
+    email: string | null,
+    phone: string | null,
+    messenger: string | null,
 }
