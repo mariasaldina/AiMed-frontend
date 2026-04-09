@@ -1,4 +1,4 @@
-import { Burger, Flex } from "@mantine/core"
+import { Burger, Flex, Indicator } from "@mantine/core"
 import { IconBell, IconHome, IconLogin, IconMessage2 } from "@tabler/icons-react"
 import HeaderItem from "./HeaderItem"
 import ProfileMenu from "@/ui/ProfileMenu"
@@ -12,6 +12,9 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ navbarOpened, showNavbar, toggleNavbar }) => {
     const { user } = useAppSelector(state => state.userReducer)
+    const { notifications } = useAppSelector(state => state.notificationReducer)
+
+    const hasUnread = notifications.unread.length !== 0
 
     return (
         <Flex h={'100%'} w={'100%'} align={'center'} px={{ base: 'xs', sm: 'md' }}>
@@ -37,7 +40,16 @@ const Header: React.FC<HeaderProps> = ({ navbarOpened, showNavbar, toggleNavbar 
                 {user && <HeaderItem
                     to="/notifications"
                     label="Уведомления"
-                    icon={<IconBell />}
+                    icon={
+                        <Indicator
+                            disabled={!hasUnread}
+                            color="red"
+                            size={12}
+                            offset={4}
+                            withBorder
+                        >
+                            <IconBell />
+                        </Indicator>}
                 />}
                 {user && <ProfileMenu />}
                 {!user && <HeaderItem 

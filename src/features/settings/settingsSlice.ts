@@ -13,7 +13,11 @@ const initialState: SettingsSliceType = { loading: {}, errors: {} }
 const settingsSlice = createSlice({
     name: 'settings',
     initialState,
-    reducers: { },
+    reducers: {
+        clearError: (state, action) => {
+            state.errors[action.payload] = null
+        }
+    },
     extraReducers: builder => {
         builder
             .addMatcher(
@@ -36,10 +40,17 @@ const settingsSlice = createSlice({
                 (state, action) => {
                     const key = action.type.replace('/rejected', '')
                     state.loading[key] = false
-                    state.errors[key] = action.error.message ?? 'Unknown error'
+
+                    if (action.payload && typeof action.payload === 'string') {
+                        state.errors[key] = action.payload
+                    } else {
+                        state.errors[key] = action.error.message ?? 'Unknown error'
+                    }
                 }
             )
     }
 })
+
+export const { clearError } = settingsSlice.actions
 
 export default settingsSlice.reducer

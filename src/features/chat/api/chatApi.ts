@@ -32,8 +32,8 @@ export const getChats = async (): Promise<Chat[]> => {
     return data
 }
 
-export const createChat = async (properties: { title: string }): Promise<Chat> => {
-    const { data } = await api.post<Chat>('/chat', properties)
+export const createChat = async (title: string): Promise<Chat> => {
+    const { data } = await api.post<Chat>('/chat', { title })
     return data
 }
 

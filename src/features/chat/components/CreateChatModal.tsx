@@ -1,10 +1,9 @@
 import { useState } from "react"
 import * as z from 'zod'
-import { createChat } from "../api/chatApi"
 import { useNavigate } from "react-router-dom"
 import { Button, Flex, Modal, TextInput } from "@mantine/core"
 import { useAppDispatch } from "@/hooks/redux"
-import { addChat } from "@/features/chat/lib/chatSlice"
+import { addChatThunk } from "@/features/chat/lib/chatSlice"
 import { useForm } from "@mantine/form"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { IconSparkles } from "@tabler/icons-react"
@@ -25,16 +24,11 @@ const CreateChatModal = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
 
-    const onSubmit = async (properties: CreateChatModalValues) => {
-        try {
-            const chat = await createChat(properties)
-            dispatch(addChat(chat))
-            navigate(`/chats/${chat.id}`)
-            form.reset()
-            setOpen(false)
-        } catch (e) {
-            console.log(e)
-        }
+    const onSubmit = async ({ title }: CreateChatModalValues) => {
+        const chat = await dispatch(addChatThunk({ title })).unwrap()
+        navigate(`/chats/${chat.id}`)
+        form.reset()
+        setOpen(false)
     }
 
     return (
@@ -57,7 +51,13 @@ const CreateChatModal = () => {
                 </form>
             </Modal>
 
-            <Button type="button" onClick={() => setOpen(true)} rightSection={<IconSparkles />} variant="gradient">
+            <Button
+                type="button"
+                onClick={() => setOpen(true)}
+                rightSection={<IconSparkles />}
+                variant="gradient"
+                gradient={{ from: 'indigo.7', to: 'indigo.4' }}
+            >
                 Начать новый чат
             </Button>
         </>

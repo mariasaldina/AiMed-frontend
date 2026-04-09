@@ -2,9 +2,8 @@ import { Button, Modal, Stack, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useState } from "react"
 import { useAppDispatch } from "@/hooks/redux"
-import { addMessage } from "@/features/chat/lib/chatMessagesSlice"
+import { inviteDoctorThunk } from "@/features/chat/lib/chatMessagesSlice"
 import { useParams } from "react-router-dom"
-import { inviteDoctor } from "../api/chatApi"
 
 interface InviteDoctorModalProps {
     doctorId: number
@@ -25,13 +24,9 @@ const InviteDoctorModal: React.FC<InviteDoctorModalProps> = ({ doctorId }) => {
 
     const onSubmit = async ({ content }: { content: string }) => {
         if (!parsedChatId) return
-        try {
-            const message = await inviteDoctor(parsedChatId, doctorId, content)
-            dispatch(addMessage(message))
-            setOpened(false)
-        } catch (e) {
-            console.log(e)
-        }
+        
+        dispatch(inviteDoctorThunk({ chatId: parsedChatId, doctorId, content }))
+        setOpened(false)
     }
 
     return (

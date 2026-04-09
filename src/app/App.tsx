@@ -1,12 +1,12 @@
 import { BrowserRouter } from "react-router-dom"
-import UserInitializer from "./UserInitializer"
+import UserInitializer from "../components/UserInitializer"
 import { Provider } from "react-redux"
 import { store } from "@/lib/store"
-import CommonWrapper from "./CommonWrapper"
+import CommonWrapper from "../components/CommonWrapper"
 import AppRouter from "./AppRouter"
 import { MantineProvider } from "@mantine/core"
 import theme from "@/lib/theme"
-import AuthWrapper from "./AuthWrapper"
+import AuthWrapper from "../components/AuthWrapper"
 import { DatesProvider } from "@mantine/dates"
 
 const App = () => {

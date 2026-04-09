@@ -2,14 +2,12 @@ import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import Form from '@/ui/Form';
 import { useState } from 'react';
-import { signUp } from '@/features/auth/api/auth';
-import { setUser } from '@/features/user/lib/userSlice';
+import { signUpThunk } from '@/features/user/lib/userSlice';
 import { Button, Group, PasswordInput, Radio, Stack, Stepper, TextInput } from '@mantine/core';
 import { useAppDispatch } from '@/hooks/redux';
 import { useForm } from '@mantine/form';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import type { UserRole } from '@/features/user/types/user';
-import { getUser } from '@/features/user/api/user';
 
 const step1Schema = z.object({
     username: z.string().min(1, 'Обязательное поле'),
@@ -61,13 +59,11 @@ const SignUpForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
-    const onSubmit = async (data: SignUpFormValues) => {
+    const onSubmit = async (credentials: SignUpFormValues) => {
         try {
-            await signUp(data)
-            const user = await getUser()
-            dispatch(setUser(user))
+            await dispatch(signUpThunk({ credentials })).unwrap()
             navigate('/home')
-        } catch (e: any) {
+        } catch (e) {
             console.log(e)
         }
     }

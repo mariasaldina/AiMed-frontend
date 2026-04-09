@@ -3,7 +3,6 @@ import FieldBlock from "./FieldBlock"
 import type { Contacts } from "@/features/user/types/user"
 
 const ContactsCard: React.FC<{ contacts: Contacts }> = ({ contacts }) => {
-    console.log(contacts)
     return (
         <Stack
             gap={15}

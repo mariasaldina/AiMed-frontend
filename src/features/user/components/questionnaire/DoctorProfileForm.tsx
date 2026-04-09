@@ -83,7 +83,7 @@ const DoctorProfileForm: React.FC<DoctorProfileFormProps> = ({ isEditing, onCanc
     }
 
     const onSubmit = async (formData: FormValues) => {
-        dispatch(editDoctorProfileThunk({ fullName: formData.fullName, profile: formData }))
+        await dispatch(editDoctorProfileThunk({ fullName: formData.fullName, profile: formData })).unwrap()
         onCancel()
     }
 

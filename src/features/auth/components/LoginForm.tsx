@@ -1,11 +1,9 @@
 import * as z from 'zod';
 import { useNavigate } from "react-router-dom";
 import Form from "@/ui/Form";
-import { login } from "@/features/auth/api/auth";
-import { setUser } from "@/features/user/lib/userSlice";
+import { loginThunk } from "@/features/user/lib/userSlice";
 import { Button, PasswordInput, TextInput } from "@mantine/core";
 import { useAppDispatch } from "@/hooks/redux";
-import { getUser } from "@/features/user/api/user";
 import { useForm } from '@mantine/form';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 
@@ -30,11 +28,9 @@ const LoginForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
 
     const onSubmit = async (credentials: LoginFormValues) => {
         try {
-            await login(credentials)
-            const user = await getUser()
-            dispatch(setUser(user))
+            await dispatch(loginThunk({ credentials })).unwrap()
             navigate('/home')
-        } catch (e: any) {
+        } catch (e) {
             console.log(e)
         }
     }

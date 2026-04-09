@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 interface FieldBlockProps {
     label: string;
-    value?: string;
+    value?: string | null;
     children?: ReactNode;
 }
 
@@ -18,8 +18,12 @@ const FieldBlock: React.FC<FieldBlockProps> = ({ label, value, children }) => {
                 {label}
             </Text>
 
-            <Text size="sm">{value}</Text>
-            {children}    
+            {value && <Text size="sm">{value}</Text>}
+            {children}
+
+            {!value && !children && <Text size="sm" c="grey" style={{ minWidth: 150 }}>
+                пусто
+            </Text>}  
         </Flex>
     )
 }

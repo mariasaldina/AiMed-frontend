@@ -50,7 +50,7 @@ const Contacts = () => {
     }
 
     const onSubmit = async (contacts: FormValues) => {
-        dispatch(updateContactsThunk({ contacts }))
+        await dispatch(updateContactsThunk({ contacts })).unwrap()
         close()
     }
 

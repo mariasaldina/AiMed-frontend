@@ -11,6 +11,8 @@
     "start": "tsc -b && vite build"
   },
   "dependencies": {
+    "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@fontsource/manrope": "^5.2.8",
     "@mantine/core": "^9.0.0",
     "@mantine/dates": "^9.0.0",
     "@mantine/form": "^8.3.18",
