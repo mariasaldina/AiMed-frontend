@@ -2,7 +2,7 @@ import * as z from 'zod';
 import { useNavigate } from "react-router-dom";
 import Form from "@/ui/Form";
 import { loginThunk } from "@/features/user/lib/userSlice";
-import { Button, PasswordInput, TextInput } from "@mantine/core";
+import { Button, Center, PasswordInput, TextInput } from "@mantine/core";
 import { useAppDispatch } from "@/hooks/redux";
 import { useForm } from '@mantine/form';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
@@ -14,7 +14,7 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>
 
-const LoginForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
+const LoginForm = () => {
     const form = useForm({
         initialValues: {
             username: '',
@@ -36,24 +36,26 @@ const LoginForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
     }
 
     return (
-        <Form onSubmit={form.onSubmit(onSubmit)} title="Войти">
-            <TextInput
-                label="Username"
-                {...form.getInputProps('username')}
-            />
-            <PasswordInput
-                label="Пароль"
-                {...form.getInputProps('password')}
-            />
+        <Center pos="relative" h="100dvh" w="100dvw">
+            <Form onSubmit={form.onSubmit(onSubmit)} title="Войти">
+                <TextInput
+                    label="Username"
+                    {...form.getInputProps('username')}
+                />
+                <PasswordInput
+                    label="Пароль"
+                    {...form.getInputProps('password')}
+                />
 
-            <Button type="submit">
-                Войти
-            </Button>
+                <Button type="submit">
+                    Войти
+                </Button>
 
-            <Button type="button" onClick={onSwitch} variant='outline'>
-                Впервые здесь? Регистрация
-            </Button>
-        </Form>
+                <Button type="button" onClick={() => navigate('/sign-up')} variant='outline'>
+                    Впервые здесь? Регистрация
+                </Button>
+            </Form>
+        </Center>
     )
 }
 

@@ -9,16 +9,12 @@ const CommonWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { errors } = useAppSelector(state => state.settingsReducer)
     const dispatch = useAppDispatch()
 
-    const isUserLoading = loading['user/getUser']
-    const isUserInitialized = 'user/getUser' in loading
-
     const errorKeys = Object.keys(errors).filter(k => errors[k] && k !== 'user/getUser')
-
     const currentError = errors[errorKeys[0]]
 
     return (
         <>
-            {(isUserLoading || !isUserInitialized) && <Center h={'100dvh'}><Loader /></Center>}
+            {loading['user/getUser'] && <Center h={'100dvh'}><Loader /></Center>}
             <ErrorAlert errorMessage={currentError} onClose={() => dispatch(clearError(errorKeys[0]))} />
             {children}
         </>

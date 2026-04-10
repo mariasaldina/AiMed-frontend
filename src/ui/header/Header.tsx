@@ -1,5 +1,5 @@
 import { Burger, Flex, Indicator } from "@mantine/core"
-import { IconBell, IconHome, IconLogin, IconMessage2 } from "@tabler/icons-react"
+import { IconBell, IconHome, IconLogin, IconMessage2, IconUserPlus } from "@tabler/icons-react"
 import HeaderItem from "./HeaderItem"
 import ProfileMenu from "@/ui/ProfileMenu"
 import { useAppSelector } from "@/hooks/redux"
@@ -53,9 +53,14 @@ const Header: React.FC<HeaderProps> = ({ navbarOpened, showNavbar, toggleNavbar 
                 />}
                 {user && <ProfileMenu />}
                 {!user && <HeaderItem 
-                    to="/auth"
+                    to="/login"
                     label="Вход"
                     icon={<IconLogin />}
+                />}
+                {!user && <HeaderItem 
+                    to="/sign-up"
+                    label="Регистрация"
+                    icon={<IconUserPlus />}
                 />}
             </Flex>
         </Flex>

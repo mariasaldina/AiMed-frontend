@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice  } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, type PayloadAction  } from "@reduxjs/toolkit";
 import type { Chat } from "../types/chat";
 import { createChat, deleteChat, getChats } from "../api/chatApi";
 import axios from "axios";
@@ -12,7 +12,15 @@ const initialState: ChatsSliceType = { chats: [] }
 const chatsSlice = createSlice({
     name: 'chats',
     initialState,
-    reducers: { },
+    reducers: {
+        moveToTop: (state, action: PayloadAction<number>) => {
+            const index = state.chats.findIndex(c => c.id === action.payload)
+            if (index !== -1) {
+                const [chat] = state.chats.splice(index, 1)
+                state.chats.unshift(chat)
+            }
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(loadChatsThunk.fulfilled, (state, action) => {
@@ -62,5 +70,7 @@ export const deleteChatThunk = createAsyncThunk('chats/deleteChat',
         }
     }
 )
+
+export const { moveToTop } = chatsSlice.actions
 
 export default chatsSlice.reducer

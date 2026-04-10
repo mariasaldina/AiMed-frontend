@@ -1,7 +1,6 @@
 import AssistantMessage from "../ui/AssitantMessage"
 import UserMessage from "../ui/UserMessage"
 import DoctorSuggestions from "../ui/DoctorSuggestions"
-import { uuidv4 } from "zod"
 import { Flex } from "@mantine/core"
 import InvitationMessage from "../ui/InvitationMessage"
 import { useAppSelector } from "@/hooks/redux"
@@ -31,7 +30,7 @@ const MessageList = () => {
                 ? <DoctorSuggestions key={m.id} doctors={m.doctors} />
                 : m.kind === "invitation"
                 ? <InvitationMessage key={m.id} content={m.content} fullName={m.doctorsFullName} />
-                : <div key={String(uuidv4())}/>
+                : null
             )}
         </Flex>
     )

@@ -1,9 +1,9 @@
 import { useEffect } from "react"
 import { Outlet } from "react-router-dom"
-import { loadChatsThunk } from "@/features/chat/lib/chatSlice"
+import { loadChatsThunk } from "@/features/chat/lib/chatsSlice"
 import { useAppDispatch } from "@/hooks/redux"
 
-const ChatFetcher = () => {
+const ChatListFetcher = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -13,4 +13,4 @@ const ChatFetcher = () => {
     return <Outlet />
 }
 
-export default ChatFetcher
+export default ChatListFetcher

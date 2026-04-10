@@ -24,6 +24,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>
 
 const PatientProfileForm: React.FC<PatientProfileFormProps> = ({ isEditing, onCancel }) => {
+    const { loading } = useAppSelector(state => state.settingsReducer)
     const { user } = useAppSelector(state => state.userReducer)
     const dispatch = useAppDispatch()
 
@@ -62,6 +63,7 @@ const PatientProfileForm: React.FC<PatientProfileFormProps> = ({ isEditing, onCa
             isEditing={isEditing}
             onCancel={onCancel}
             resetForm={resetForm}
+            loadingIndicator={loading['user/editPatientProfile']}
         >
             <TextInput
                 placeholder="ФИО"

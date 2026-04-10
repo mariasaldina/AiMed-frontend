@@ -38,6 +38,10 @@ const settingsSlice = createSlice({
             .addMatcher(
                 isRejected,
                 (state, action) => {
+                    if (action.meta.aborted) {
+                        return
+                    }
+
                     const key = action.type.replace('/rejected', '')
                     state.loading[key] = false
 

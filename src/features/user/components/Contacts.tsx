@@ -29,6 +29,7 @@ const Contacts = () => {
         close: () => void
     }>()
 
+    const { loading } = useAppSelector(state => state.settingsReducer)
     const { user } = useAppSelector(state => state.userReducer)
     const dispatch = useAppDispatch()
 
@@ -60,6 +61,7 @@ const Contacts = () => {
             onCancel={close}
             resetForm={resetForm}
             onSubmit={form.onSubmit(onSubmit)}
+            loadingIndicator={loading['user/updateContacts']}
         >
             <TextInput
                 label="Почта"

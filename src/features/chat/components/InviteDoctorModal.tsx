@@ -26,6 +26,7 @@ const InviteDoctorModal: React.FC<InviteDoctorModalProps> = ({ doctorId }) => {
         if (!parsedChatId) return
         
         dispatch(inviteDoctorThunk({ chatId: parsedChatId, doctorId, content }))
+        form.reset()
         setOpened(false)
     }
 
@@ -34,7 +35,7 @@ const InviteDoctorModal: React.FC<InviteDoctorModalProps> = ({ doctorId }) => {
             <Modal
                 title="Запросить контакты"
                 opened={opened}
-                onClose={() => setOpened(false)}
+                onClose={() => { form.reset(); setOpened(false) }}
                 centered
                 closeOnClickOutside
             >

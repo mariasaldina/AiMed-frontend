@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Form from '@/ui/Form';
 import { useState } from 'react';
 import { signUpThunk } from '@/features/user/lib/userSlice';
-import { Button, Group, PasswordInput, Radio, Stack, Stepper, TextInput } from '@mantine/core';
+import { Button, Center, Group, PasswordInput, Radio, Stack, Stepper, TextInput } from '@mantine/core';
 import { useAppDispatch } from '@/hooks/redux';
 import { useForm } from '@mantine/form';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
@@ -23,7 +23,7 @@ const signUpSchema = step1Schema.extend(step2Schema.shape)
 
 type SignUpFormValues = z.infer<typeof signUpSchema>
 
-const SignUpForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
+const SignUpForm = () => {
     const [step, setStep] = useState(0)
 
     const nextStep = () => {
@@ -69,55 +69,57 @@ const SignUpForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
     }
 
     return (
-        <Form onSubmit={form.onSubmit(onSubmit)} title="Зарегистрироваться" gap={10}>
-            <Stepper active={step}>
-                <Stepper.Step>
-                    <Stack>
-                        <TextInput
-                            label="Username"
-                            {...form.getInputProps('username')}
-                            key={form.key('username')}
-                        />
-                        <PasswordInput
-                            label="Пароль"
-                            {...form.getInputProps('password')}
-                            key={form.key('password')}
-                        />
+        <Center pos="relative" h="100dvh" w="100dvw">
+            <Form onSubmit={form.onSubmit(onSubmit)} title="Зарегистрироваться" gap={10}>
+                <Stepper active={step}>
+                    <Stepper.Step>
+                        <Stack>
+                            <TextInput
+                                label="Username"
+                                {...form.getInputProps('username')}
+                                key={form.key('username')}
+                            />
+                            <PasswordInput
+                                label="Пароль"
+                                {...form.getInputProps('password')}
+                                key={form.key('password')}
+                            />
 
-                        <Button type='button' onClick={e => { e.preventDefault(); nextStep() }}>
-                            Далее
-                        </Button>
-                    </Stack>
-                </Stepper.Step>
+                            <Button type='button' onClick={e => { e.preventDefault(); nextStep() }}>
+                                Далее
+                            </Button>
+                        </Stack>
+                    </Stepper.Step>
 
-                <Stepper.Step>
-                    <Stack>
-                        <TextInput
-                            label="ФИО"
-                            {...form.getInputProps('fullName')}
-                            key={form.key('fullName')}
-                        />
-                        <Radio.Group
-                            description='Роль'
-                            {...form.getInputProps('role')}
-                            key={form.key('role')}
-                        >
-                            <Group>
-                                <Radio label='пользователь' value='PATIENT' />
-                                <Radio label='медицинский специалист' value='DOCTOR' />
-                            </Group>
-                        </Radio.Group>
+                    <Stepper.Step>
+                        <Stack>
+                            <TextInput
+                                label="ФИО"
+                                {...form.getInputProps('fullName')}
+                                key={form.key('fullName')}
+                            />
+                            <Radio.Group
+                                description='Роль'
+                                {...form.getInputProps('role')}
+                                key={form.key('role')}
+                            >
+                                <Group>
+                                    <Radio label='пользователь' value='PATIENT' />
+                                    <Radio label='медицинский специалист' value='DOCTOR' />
+                                </Group>
+                            </Radio.Group>
 
-                        <Button type="submit">Зарегистрироваться</Button>
-                        <Button type="button" onClick={prevStep} variant='light'>Назад</Button>
-                    </Stack>
-                </Stepper.Step>
-            </Stepper>
+                            <Button type="submit">Зарегистрироваться</Button>
+                            <Button type="button" onClick={prevStep} variant='light'>Назад</Button>
+                        </Stack>
+                    </Stepper.Step>
+                </Stepper>
 
-            <Button type="button" onClick={onSwitch} variant='outline'>
-                Уже есть аккаунт? Войти
-            </Button>
-        </Form>
+                <Button type="button" onClick={() => navigate('/login')} variant='outline'>
+                    Уже есть аккаунт? Войти
+                </Button>
+            </Form>
+        </Center>
     )
 }
 

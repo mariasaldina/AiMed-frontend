@@ -1,25 +1,30 @@
 import { Accordion, Blockquote, Button, Group, Text } from "@mantine/core"
 import type { DoctorNotificationType } from "../types/notifications"
 import PatientCard from "../ui/PatientCard"
-import { useAppDispatch } from "@/hooks/redux"
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"
 import { notifyPatientThunk } from "../lib/notificationSlice"
 import ApprovedMessage from "../ui/ApprovedMessage"
 import RejectedMessage from "../ui/RejectedMessage"
 import NotificationCard from "../ui/NotificationCard"
 import PendingMessage from "../ui/PendingMessage"
+import { useState } from "react"
 
 interface DoctorNotificationProps {
     notification: DoctorNotificationType
 }
 
 const DoctorNotification: React.FC<DoctorNotificationProps> = ({ notification }) => {
+    const { loading } = useAppSelector(state => state.settingsReducer)
     const dispatch = useAppDispatch()
+    const [clicked, setClicked] = useState<'APPROVED' | 'REJECTED' | null>(null)
 
     const handleApprove = async () => {
+        setClicked('APPROVED')
         dispatch(notifyPatientThunk({ status: 'APPROVED', notificationId: notification.id }))
     }
 
     const handleReject = async () => {
+        setClicked('REJECTED')
         dispatch(notifyPatientThunk({ status: 'REJECTED', notificationId: notification.id }))
     }
 
@@ -59,6 +64,8 @@ const DoctorNotification: React.FC<DoctorNotificationProps> = ({ notification })
                     <Button
                         variant="filled"
                         onClick={handleApprove}
+                        loading={clicked === 'APPROVED' && loading['notifications/notifyPatient']}
+                        disabled={clicked !== null}
                     >
                         Дать контакты
                     </Button>
@@ -66,6 +73,8 @@ const DoctorNotification: React.FC<DoctorNotificationProps> = ({ notification })
                     <Button
                         variant='light'
                         onClick={handleReject}
+                        loading={clicked === 'REJECTED' && loading['notifications/notifyPatient']}
+                        disabled={clicked !== null}
                     >
                         Отклонить
                     </Button>

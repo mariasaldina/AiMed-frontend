@@ -16,7 +16,7 @@ export const useChatMessages = (chatId: number | null) => {
 
         const controller = new AbortController()
         const loadMessages = async () => {
-            dispatch(loadMessagesThunk({ chatId, signal: controller.signal }))
+            dispatch(loadMessagesThunk({ chatId }))
                 .unwrap()
                 .catch(err => {
                     if (axios.isAxiosError(err) && err.response?.status === 404) {

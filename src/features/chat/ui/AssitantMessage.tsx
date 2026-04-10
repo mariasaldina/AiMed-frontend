@@ -1,6 +1,6 @@
 import type React from "react"
 import type { UrgencyStatus } from "../types/chat"
-import { Divider, Group, List, Paper, Stack, Text } from "@mantine/core"
+import { Divider, Group, List, Paper, Stack, Text, useMantineTheme } from "@mantine/core"
 import { IconAlertHexagonFilled, IconClipboardListFilled, IconStethoscope, IconZoomQuestionFilled } from "@tabler/icons-react"
 
 interface AssistantMessageProps {
@@ -12,6 +12,10 @@ interface AssistantMessageProps {
 
 const AssistantMessage: React.FC<AssistantMessageProps>
     = ({ possibleCauses, recommendations, doctors, urgency }) => {
+        const color = urgency === 'SAFE' ? 'green' : urgency === 'CONCERNING' ? 'orange' : 'red'
+        const theme = useMantineTheme()
+        const iconColor = theme.colors['indigo'][6]
+
         return (
             <Paper
                 style={{ alignSelf: 'flex-start' }}
@@ -24,11 +28,11 @@ const AssistantMessage: React.FC<AssistantMessageProps>
                 <Stack>
                     <Stack gap={5}>
                         <Group>
-                            <IconAlertHexagonFilled />
+                            <IconAlertHexagonFilled color={color} />
                             <Text fw={800} size="lg">Уровень риска</Text>
                         </Group>
                         <Text
-                            c={urgency === 'SAFE' ? 'green' : urgency === 'CONCERNING' ? 'orange' : 'red'}
+                            c={color}
                         >
                             {urgency === 'SAFE' && 'Безопасный'}
                             {urgency === 'CONCERNING' && 'Тревожный'}
@@ -40,7 +44,7 @@ const AssistantMessage: React.FC<AssistantMessageProps>
 
                     <Stack>
                         <Group>
-                            <IconZoomQuestionFilled />
+                            <IconZoomQuestionFilled color={iconColor} />
                             <Text fw={800} size="lg">Возможные причины</Text>
                         </Group>
                         <List>
@@ -52,7 +56,7 @@ const AssistantMessage: React.FC<AssistantMessageProps>
 
                     <Stack>
                         <Group>
-                            <IconClipboardListFilled />
+                            <IconClipboardListFilled color={iconColor} />
                             <Text fw={800} size="lg">Рекомендации</Text>
                         </Group>
                         <List>
@@ -64,7 +68,7 @@ const AssistantMessage: React.FC<AssistantMessageProps>
 
                     <Stack>
                         <Group>
-                            <IconStethoscope />
+                            <IconStethoscope color={iconColor} />
                             <Text fw={800} size="lg">К каким специалистам обратиться?</Text>
                         </Group>
                         <List>

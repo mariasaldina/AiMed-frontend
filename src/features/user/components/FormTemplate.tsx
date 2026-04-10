@@ -6,10 +6,11 @@ interface FormTemplateProps {
     onCancel: () => void,
     resetForm: () => void,
     onSubmit: () => void,
+    loadingIndicator: boolean,
     children: ReactNode
 }
 
-const FormTemplate: React.FC<FormTemplateProps> = ({ isEditing, onCancel, resetForm, onSubmit, children }) => {
+const FormTemplate: React.FC<FormTemplateProps> = ({ isEditing, onCancel, resetForm, onSubmit, loadingIndicator, children }) => {
     useEffect(() => {
         resetForm()
     }, [isEditing])
@@ -30,7 +31,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({ isEditing, onCancel, resetF
 
                 {isEditing ?
                     <Stack>
-                        <Button type="submit">
+                        <Button type="submit" loading={loadingIndicator}>
                             Сохранить
                         </Button>
                         <Button type="button" variant='light' onClick={() => { resetForm(); onCancel() }}>

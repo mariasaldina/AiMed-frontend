@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "@/features/user/lib/userSlice";
 import settingsReducer from "@/features/settings/settingsSlice"
-import chatsReducer from "@/features/chat/lib/chatSlice"
+import chatsReducer from "@/features/chat/lib/chatsSlice"
 import chatMessagesReducer from "@/features/chat/lib/chatMessagesSlice"
 import notificationReducer from "@/features/notifications/lib/notificationSlice"
 

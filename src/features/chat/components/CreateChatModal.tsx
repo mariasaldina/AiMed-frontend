@@ -2,8 +2,8 @@ import { useState } from "react"
 import * as z from 'zod'
 import { useNavigate } from "react-router-dom"
 import { Button, Flex, Modal, TextInput } from "@mantine/core"
-import { useAppDispatch } from "@/hooks/redux"
-import { addChatThunk } from "@/features/chat/lib/chatSlice"
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"
+import { addChatThunk } from "@/features/chat/lib/chatsSlice"
 import { useForm } from "@mantine/form"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { IconSparkles } from "@tabler/icons-react"
@@ -15,6 +15,7 @@ const createChatSchema = z.object({
 type CreateChatModalValues = z.infer<typeof createChatSchema>
 
 const CreateChatModal = () => {
+    const { loading } = useAppSelector(state => state.settingsReducer)
     const [isOpen, setOpen] = useState(false)
     const form = useForm({
         initialValues: { title: '' },
@@ -35,7 +36,7 @@ const CreateChatModal = () => {
         <>
             <Modal
                 opened={isOpen}
-                onClose={() => setOpen(false)}
+                onClose={() => { form.reset(); setOpen(false) }}
                 title={"Начать чат"}
                 centered
                 closeOnClickOutside
@@ -46,7 +47,9 @@ const CreateChatModal = () => {
                             label={"Название чата"}
                             {...form.getInputProps('title')}
                         />
-                        <Button type="submit">Создать чат</Button>
+                        <Button type="submit" loading={loading['chats/addChat']}>
+                            Создать чат
+                        </Button>
                     </Flex>
                 </form>
             </Modal>

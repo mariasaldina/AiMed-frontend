@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/tool
 import type { Message } from "../types/chat";
 import { findDoctorsApi, getMessages, inviteDoctor, sendMessage } from "../api/chatApi";
 import axios from "axios";
+import { moveToTop } from "./chatsSlice";
 
 interface ChatMessagesSliceType {
     messages: Message[]
@@ -46,9 +47,13 @@ const chatMessagesSlice = createSlice({
 
 export const sendMessageThunk = createAsyncThunk(
     'chatMessages/sendMessage',
-    async ({ content, chatId, tempId } : { content: string, chatId: number, tempId: string }, { rejectWithValue }) => {
+    async (
+        { content, chatId, tempId }: { content: string, chatId: number, tempId: string },
+        { rejectWithValue, dispatch }
+    ) => {
         try {
             const { userMessage, assistantMessage } = await sendMessage(content, chatId)
+            dispatch(moveToTop(chatId))
             return { tempId, messages: [userMessage, assistantMessage] }
         } catch (e) {
             if (axios.isAxiosError(e)) {
@@ -66,7 +71,7 @@ export const sendMessageThunk = createAsyncThunk(
 
 export const loadMessagesThunk = createAsyncThunk(
     'chatMessages/loadMessages',
-    async ({ chatId, signal } : { chatId: number, signal: AbortSignal }, { rejectWithValue }) => {
+    async ({ chatId }: { chatId: number }, { rejectWithValue, signal }) => {
         try {
             const messages = await getMessages(signal, chatId)
             return messages
@@ -83,9 +88,11 @@ export const loadMessagesThunk = createAsyncThunk(
 
 export const findDoctorsThunk = createAsyncThunk(
     'chatMessages/findDoctors',
-    async ({ chatId } : { chatId: number }, { rejectWithValue }) => {
+    async ({ chatId }: { chatId: number }, { rejectWithValue, dispatch }) => {
         try {
-            return await findDoctorsApi(chatId)
+            const res = await findDoctorsApi(chatId)
+            dispatch(moveToTop(chatId))
+            return res
         } catch (e) {
             if (axios.isAxiosError(e)) {
                 if (e.response?.status === 404) {
@@ -102,9 +109,14 @@ export const findDoctorsThunk = createAsyncThunk(
 
 export const inviteDoctorThunk = createAsyncThunk(
     'chatMessages/inviteDoctor',
-    async ({ chatId, doctorId, content }: { chatId: number, doctorId: number, content: string }, { rejectWithValue }) => {
+    async (
+        { chatId, doctorId, content }: { chatId: number, doctorId: number, content: string },
+        { rejectWithValue, dispatch }
+    ) => {
         try {
-            return await inviteDoctor(chatId, doctorId, content)
+            const res =  await inviteDoctor(chatId, doctorId, content)
+            dispatch(moveToTop(chatId))
+            return res
         } catch (e) {
             if (axios.isAxiosError(e)) {
                 if (e.response?.status === 404) {

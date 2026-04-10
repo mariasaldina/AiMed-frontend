@@ -11,7 +11,10 @@ import { useChatMessages } from "../hooks/useChatMessages"
 const Chat = () => {
     const { messages } = useAppSelector(state => state.chatMessagesReducer)
     const loading = useAppSelector(state => state.settingsReducer.loading)
-    const sending = loading['chatMessages/sendMessage'] || loading['chatMessages/findDoctors']
+    const sending =
+        loading['chatMessages/sendMessage'] ||
+        loading['chatMessages/findDoctors'] ||
+        loading['chatMessages/inviteDoctor']
 
     const { chatId } = useParams()
     const parsedChatId = chatId ? Number(chatId) : null
@@ -32,7 +35,7 @@ const Chat = () => {
             h={"100%"}
             direction={"column"}
             align={'center'}
-            px={{ base: 'lg', sm: '15%' }}
+            px={{ base: 'lg', sm: '10dvh' }}
         >
             {loading['chatMessages/loadMessages'] ?
                 <Center h={'100%'}><Loader /></Center> :

@@ -26,7 +26,7 @@ const LandingLayout = () => {
                     size="xl"
                     bdrs={20}
                     rightSection={<IconSparklesFilled size={35}/>}
-                    onClick={() => user ? navigate('/chats') : navigate('/auth')}
+                    onClick={() => user ? navigate('/chats') : navigate('/login')}
                 >
                     Начать работу
                 </Button>

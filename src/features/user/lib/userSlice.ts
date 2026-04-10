@@ -7,10 +7,11 @@ import { loadNotificationsThunk } from "@/features/notifications/lib/notificatio
 import axios from "axios";
 
 interface UserSliceType {
-    user: User | null
+    user: User | null,
+    isInitialized: boolean
 }
 
-const initialState: UserSliceType = { user: null }
+const initialState: UserSliceType = { user: null, isInitialized: false }
 
 const userSlice = createSlice({
     name: 'user',
@@ -20,7 +21,12 @@ const userSlice = createSlice({
         builder
             .addCase(getUserThunk.fulfilled, (state, action) => {
                 state.user = action.payload
+                state.isInitialized = true
             })
+            .addCase(getUserThunk.rejected, state => {
+                state.isInitialized = true
+            })
+
             .addCase(logoutThunk.fulfilled, state => {
                 state.user = null
             })
