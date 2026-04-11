@@ -4,17 +4,18 @@ import { loadMessagesThunk, setMessages } from "../lib/chatMessagesSlice"
 import { useAppDispatch } from "@/hooks/redux"
 import { useNavigate } from "react-router-dom"
 
-export const useChatMessages = (chatId: number | null) => {
+export const useChatMessages = (chatId: number | null, initDoneRef: React.RefObject<boolean>) => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
     useEffect(() => {
+        console.log('init')
+        dispatch(setMessages([]))
+
         if (!chatId) {
-            dispatch(setMessages([]))
             return
         }
 
-        const controller = new AbortController()
         const loadMessages = async () => {
             dispatch(loadMessagesThunk({ chatId }))
                 .unwrap()
@@ -23,12 +24,9 @@ export const useChatMessages = (chatId: number | null) => {
                         navigate('/chats')
                     }
                 })
+                .finally(() => initDoneRef.current = true)
         }
 
         loadMessages()
-
-        return () => {
-            controller.abort()
-        }
     }, [chatId])
 }

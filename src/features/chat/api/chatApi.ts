@@ -3,9 +3,12 @@ import type { Message, MessageDto } from '../types/chat'
 import { mapMessage } from '../utils/messageMapper'
 import type { Chat } from '../types/chat'
 
-export const getMessages = async (signal: AbortSignal, chatId: number): Promise<Message[]> => {
-    const { data } = await api.get<{ messages: MessageDto[]}>(`/chat/${chatId}`, { signal })
-    return data.messages.map(m => mapMessage(m))
+export const getMessages = async (chatId: number, before: string, limit: number) => {
+    const { data } = await api.get<{ messages: MessageDto[], hasMore: boolean }>(
+        `/chat/${chatId}`,
+        { params: { before, limit } }
+    )
+    return { messages: data.messages.map(m => mapMessage(m)), hasMore: data.hasMore }
 }
 
 interface SendMessageResponseDto {

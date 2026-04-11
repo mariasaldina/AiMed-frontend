@@ -12,6 +12,7 @@ import Chat from "@/features/chat/components/Chat"
 import RoleGuard from "../components/RoleGuard"
 import LoginForm from "@/features/auth/components/LoginForm"
 import SignUpForm from "@/features/auth/components/SignUpForm"
+import InvitationList from "@/features/invitations/components/InvitationList"
 
 const AppRouter = () => {
     return (
@@ -40,6 +41,8 @@ const AppRouter = () => {
                 </Route>
 
                 <Route path="/notifications" element={<NotificationList />} />
+
+                <Route path="/invitations" element={<InvitationList />} />
             </Route>
 
             <Route path="*" element={<NotFoundPage />} />
