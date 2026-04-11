@@ -59,14 +59,14 @@ const chatMessagesSlice = createSlice({
 })
 
 export const loadMessagesThunk = createAsyncThunk<
-    { messages: Message[], hasMore: boolean }, { chatId: number }, { state: RootState }
+    { messages: Message[], hasMore: boolean }, { chatId: number | null }, { state: RootState }
 >(
     'chatMessages/loadMessages',
-    async ({ chatId }: { chatId: number }, { rejectWithValue, getState }) => {
+    async ({ chatId }: { chatId: number | null }, { rejectWithValue, getState }) => {
         try {
             const messages = getState().chatMessagesReducer.messages
             const before = messages.length !== 0 ? messages[0].createdAt : ''
-            const res = await getMessages(chatId, before, 2)
+            const res = await getMessages(chatId, before, 3)
             console.log(res)
             return res
         } catch (e) {

@@ -12,7 +12,9 @@ const MessageList = () => {
         <Flex
             direction={'column'}
             style={{ listStyle: 'none' }}
-            p={{ base: 'md', sm: 'xl' }}
+            px={{ base: 'md', sm: 'xl' }}
+            py={{ base: 'lg', sm: 'xl' }}
+            pt='50'
             gap={{ base: 'md', sm: 'xl' }}
         >
             {messages.map(m =>

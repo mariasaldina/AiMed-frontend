@@ -3,7 +3,7 @@ import type { Message, MessageDto } from '../types/chat'
 import { mapMessage } from '../utils/messageMapper'
 import type { Chat } from '../types/chat'
 
-export const getMessages = async (chatId: number, before: string, limit: number) => {
+export const getMessages = async (chatId: number | null, before: string, limit: number) => {
     const { data } = await api.get<{ messages: MessageDto[], hasMore: boolean }>(
         `/chat/${chatId}`,
         { params: { before, limit } }

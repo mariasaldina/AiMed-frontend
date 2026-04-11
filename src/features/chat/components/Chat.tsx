@@ -1,90 +1,36 @@
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 import MessageList from "./MessageList"
 import MessageInput from "./MessageInput"
 import TypingIndicator from "@/ui/TypingIndicator"
 import { Box, Center, Flex, Loader, ScrollArea } from "@mantine/core"
-import { useScrollIntoView } from "@mantine/hooks"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "@/hooks/redux"
+import { loadMessagesThunk } from "../lib/chatMessagesSlice"
 import { useChatMessages } from "../hooks/useChatMessages"
-import { loadMessagesThunk, resetMessages, setMessages } from "../lib/chatMessagesSlice"
-import axios from "axios"
+import { useInfiniteScroll } from "../../../hooks/useInfiniteScroll"
 
 const Chat = () => {
-    const { messages, hasMore } = useAppSelector(state => state.chatMessagesReducer)
+    const { chatId } = useParams()
+    const parsedChatId = chatId ? Number(chatId) : null
+
+    const dispatch = useAppDispatch()
+    const { hasMore } = useAppSelector(state => state.chatMessagesReducer)
     const loading = useAppSelector(state => state.settingsReducer.loading)
     const sending =
         loading['chatMessages/sendMessage'] ||
         loading['chatMessages/findDoctors'] ||
         loading['chatMessages/inviteDoctor']
 
-    const { chatId } = useParams()
-    const parsedChatId = chatId ? Number(chatId) : null
+    const scrollableRef = useRef<HTMLDivElement | null>(null)
 
-    const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({
-        offset: 0,
-        duration: 0
-    });
+    useChatMessages(parsedChatId, scrollableRef, sending)
 
-    // useEffect(() => {
-    //     scrollIntoView({ alignment: 'end' })
-    // }, [messages])
-
-
-    const dispatch = useAppDispatch()
-    const topRef = useRef(null)
-
-    const hasMoreRef = useRef(hasMore)
-
-    useEffect(() => {
-        hasMoreRef.current = hasMore
-    }, [hasMore])
-
-    useEffect(() => {
-        if (!parsedChatId) return
-
-        const root = scrollableRef.current
-        const target = topRef.current
-
-        if (!root || !target) return
-
-        const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting) {
-                if (loading['chatMessages/loadMessages'] || !hasMoreRef.current) return
-                dispatch(loadMessagesThunk({ chatId: parsedChatId }))
-            }
-        }, {
-            root,
-            rootMargin: '200px',
-            threshold: 0
-        })
-
-        observer.observe(target)
-
-        return () => observer.disconnect()
-    }, [parsedChatId])
-
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        dispatch(resetMessages())
-
-        if (!parsedChatId) {
-            return
-        }
-
-        const loadMessages = async () => {
-            dispatch(loadMessagesThunk({ chatId: parsedChatId }))
-                .unwrap()
-                .catch(err => {
-                    if (axios.isAxiosError(err) && err.response?.status === 404) {
-                        navigate('/chats')
-                    }
-                })
-        }
-
-        loadMessages()
-    }, [parsedChatId])
+    const { onScroll } = useInfiniteScroll(
+        scrollableRef,
+        Boolean(!parsedChatId || !hasMore),
+        () => dispatch(loadMessagesThunk({ chatId: parsedChatId })),
+        loading['chatMessages/loadMessages']
+    )
 
     return (
         <Flex
@@ -93,25 +39,32 @@ const Chat = () => {
             align={'center'}
             px={{ base: 'lg', sm: '10dvh' }}
         >
-            {/* {loading['chatMessages/loadMessages'] ? */}
-                {/* <Center h={'100%'}><Loader /></Center> : */}
-                <Box flex={1} mih={0} w='100%'>
-                    <ScrollArea
-                        h={"100%"}
-                        type="auto"
-                        viewportRef={scrollableRef}
-                        offsetScrollbars
-                    >
-                        <div ref={topRef} style={{ height: 1 }} />
+            <Box flex={1} mih={0} w='100%'>
+                <ScrollArea
+                    h={"100%"}
+                    type="auto"
+                    viewportRef={scrollableRef}
+                    offsetScrollbars
+                    onScrollCapture={onScroll}
+                >
+                    <div style={{ height: 1 }} />
 
-                        {loading['chatMessages/loadMessages'] && <Center h={'100%'}><Loader /></Center>}
-                        <MessageList />
-                        {sending ? <Box p={{ base: 'md', sm: 'xl' }}><TypingIndicator /></Box> : <></>}
+                    {loading['chatMessages/loadMessages'] &&
+                        <Box
+                            pos="absolute"
+                            top={10}
+                            left={0}
+                            right={0}
+                            display="flex"
+                            w="100%"
+                        >
+                            <Center w="100%"><Loader size="sm" /></Center>
+                        </Box>}
+                    <MessageList />
+                    {sending ? <Box p={{ base: 'md', sm: 'xl' }}><TypingIndicator /></Box> : <></>}
 
-                        <div ref={targetRef} style={{ height: 1 }} />
-                    </ScrollArea>
-                </Box>
-            {/* } */}
+                </ScrollArea>
+            </Box>
             {parsedChatId && <MessageInput />}
         </Flex>
     )
