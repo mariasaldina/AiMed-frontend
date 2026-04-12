@@ -26,7 +26,9 @@ const LandingLayout = () => {
                     size="xl"
                     bdrs={20}
                     rightSection={<IconSparklesFilled size={35}/>}
-                    onClick={() => user ? navigate('/chats') : navigate('/login')}
+                    onClick={() => user
+                        ? (user.role === 'PATIENT' ? navigate('/chats') : navigate('/invitations'))
+                        : navigate('/login')}
                 >
                     Начать работу
                 </Button>

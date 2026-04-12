@@ -1,7 +1,7 @@
 import { Flex, Text, useMantineTheme } from "@mantine/core"
 import { IconClockFilled } from "@tabler/icons-react"
 
-const PendingMessage: React.FC<{ text: string }> = ({ text }) => {
+function PendingMessage({ text }: { text: string }) {
     const theme = useMantineTheme()
 
     return (

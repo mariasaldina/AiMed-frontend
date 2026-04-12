@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import type { InvitationStatus, Notification } from "../types/notifications"
-import { getNotifications, notifyPatient, readNotifications } from "../api/notifications"
+import { getNotifications, readNotifications } from "../api/notifications"
 import type { RootState } from "@/lib/store"
-import axios from "axios"
+import type { Notification } from "@/features/notifications/types/notifications"
 
 interface NotificationsSliceType {
     notifications: {
@@ -22,20 +21,6 @@ const notificationSlice = createSlice({
             .addCase(loadNotificationsThunk.fulfilled, (state, action) => {
                 state.notifications = action.payload
             })
-            .addCase(notifyPatientThunk.fulfilled, (state, action) => {
-                state.notifications = {
-                    read: state.notifications.read.map(n => (
-                        n.id === action.payload.notificationId
-                            ? { ...n, invitationStatus: action.payload.status }
-                            : n
-                    )),
-                    unread: state.notifications.unread.map(n => (
-                        n.id === action.payload.notificationId
-                            ? { ...n, invitationStatus: action.payload.status }
-                            : n
-                    ))
-                }
-            })
             .addCase(readNotificationsThunk.fulfilled, state => {
                 state.notifications.read = [...state.notifications.unread, ...state.notifications.read]
                 state.notifications.unread = []
@@ -49,22 +34,6 @@ export const loadNotificationsThunk = createAsyncThunk('notification/loadNotific
             return await getNotifications()
         } catch (e) {
             return rejectWithValue("Ошибка загрузки уведомлений")
-        }
-    }
-)
-
-export const notifyPatientThunk = createAsyncThunk('notifications/notifyPatient',
-    async ({ status, notificationId }: { status: InvitationStatus, notificationId: number }, { rejectWithValue }) => {
-        try {
-            await notifyPatient(status, notificationId)
-            return { status, notificationId }
-        } catch (e) {
-            if (axios.isAxiosError(e)) {
-                if (e.response?.status === 404) {
-                    return rejectWithValue("Такого уведомления не существует")
-                }
-            }
-            return rejectWithValue("Ошибка отправки ответа")
         }
     }
 )

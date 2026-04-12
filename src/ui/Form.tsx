@@ -8,13 +8,7 @@ export interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
     gap?: number;
 }
 
-const Form: React.FC<FormProps> = ({
-    title,
-    children,
-    onSubmit,
-    gap = 20,
-    ...props
-}) => {
+function Form({ title, children, onSubmit, gap = 20, ...props }: FormProps) {
     return (
         <Paper
             p={{ base: 'lg', sm: 'xl' }}

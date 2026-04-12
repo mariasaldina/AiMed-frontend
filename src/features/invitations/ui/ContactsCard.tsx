@@ -2,7 +2,7 @@ import { Stack } from "@mantine/core"
 import FieldBlock from "./FieldBlock"
 import type { Contacts } from "@/features/user/types/user"
 
-const ContactsCard: React.FC<{ contacts: Contacts }> = ({ contacts }) => {
+function ContactsCard({ contacts }: { contacts: Contacts }) {
     return (
         <Stack
             gap={15}

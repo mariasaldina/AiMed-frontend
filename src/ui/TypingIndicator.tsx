@@ -1,6 +1,6 @@
 import { Loader, Paper } from '@mantine/core'
 
-const TypingIndicator: React.FC = () => {
+function TypingIndicator() {
     return (
         <Paper
             bg="gray.3"

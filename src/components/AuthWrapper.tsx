@@ -2,7 +2,7 @@ import { useAppSelector } from "@/hooks/redux"
 import type { ReactNode } from "react"
 import { Navigate, useLocation } from "react-router-dom"
 
-const AuthWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
+function AuthWrapper({ children }: { children: ReactNode }) {
     const { user, isInitialized } = useAppSelector(state => state.userReducer)
     const location = useLocation()
 

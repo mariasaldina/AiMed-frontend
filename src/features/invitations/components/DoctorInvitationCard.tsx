@@ -1,52 +1,51 @@
-import { Accordion, Blockquote, Button, Group, Text } from "@mantine/core"
-import type { DoctorNotificationType } from "../types/notifications"
-import PatientCard from "../ui/PatientCard"
+import { Accordion, Blockquote, Button, Group, Stack, Text } from "@mantine/core"
 import { useAppDispatch, useAppSelector } from "@/hooks/redux"
-import { notifyPatientThunk } from "../lib/notificationSlice"
-import ApprovedMessage from "../ui/ApprovedMessage"
-import RejectedMessage from "../ui/RejectedMessage"
-import NotificationCard from "../ui/NotificationCard"
-import PendingMessage from "../ui/PendingMessage"
+import ApprovedMessage from "../../../ui/indicatorMessages/ApprovedMessage"
+import RejectedMessage from "../../../ui/indicatorMessages/RejectedMessage"
+import PendingMessage from "../../../ui/indicatorMessages/PendingMessage"
 import { useState } from "react"
+import type { Invitation } from "../type/invitations"
+import { sendDoctorsResponseThunk } from "../lib/invitationSlice"
+import PatientCard from "../ui/PatientCard"
 
-interface DoctorNotificationProps {
-    notification: DoctorNotificationType
+interface DoctorInvitationCardProps {
+    invitation: Invitation
 }
 
-const DoctorNotification: React.FC<DoctorNotificationProps> = ({ notification }) => {
+function DoctorInvitationCard({ invitation }: DoctorInvitationCardProps) {
     const { loading } = useAppSelector(state => state.settingsReducer)
     const dispatch = useAppDispatch()
     const [clicked, setClicked] = useState<'APPROVED' | 'REJECTED' | null>(null)
 
     const handleApprove = async () => {
         setClicked('APPROVED')
-        dispatch(notifyPatientThunk({ status: 'APPROVED', notificationId: notification.id }))
+        dispatch(sendDoctorsResponseThunk({ status: 'APPROVED', invitationId: invitation.id }))
     }
 
     const handleReject = async () => {
         setClicked('REJECTED')
-        dispatch(notifyPatientThunk({ status: 'REJECTED', notificationId: notification.id }))
+        dispatch(sendDoctorsResponseThunk({ status: 'REJECTED', invitationId: invitation.id }))
     }
 
     let color;
-    switch (notification.invitationStatus) {
+    switch (invitation.status) {
         case 'APPROVED': color = 'green'; break
         case 'REJECTED': color = 'pink'; break
         case 'PENDING': color = 'blue'
     }
 
     return (
-        <NotificationCard status={notification.invitationStatus} createdAt={notification.createdAt}>
-            {notification.invitationStatus === 'APPROVED' &&
+        <Stack>
+            {invitation.status === 'APPROVED' &&
                 <ApprovedMessage text="Вы дали пациенту свои контакты" />}
 
-            {notification.invitationStatus === 'REJECTED' &&
+            {invitation.status === 'REJECTED' &&
                 <RejectedMessage text="Вы отклонили приглашение" />}
 
-            {notification.invitationStatus === 'PENDING' &&
+            {invitation.status === 'PENDING' &&
                 <PendingMessage text="Вы получили заявку" />}
 
-            <Blockquote p={{ base: 'sm' }} color={color}>{notification.content}</Blockquote>
+            <Blockquote p={{ base: 'sm' }} color={color}>{invitation.content}</Blockquote>
 
             <Accordion>
                 <Accordion.Item value={'Детали'}>
@@ -54,17 +53,17 @@ const DoctorNotification: React.FC<DoctorNotificationProps> = ({ notification })
                         <Text size='sm'>О пациенте</Text>
                     </Accordion.Control>
                     <Accordion.Panel>
-                        <PatientCard patient={notification.patient} />
+                        <PatientCard patient={invitation.patient} />
                     </Accordion.Panel>
                 </Accordion.Item>
             </Accordion>
 
-            {notification.invitationStatus === 'PENDING' &&
+            {invitation.status === 'PENDING' &&
                 <Group justify="flex-start" mt="xs">
                     <Button
                         variant="filled"
                         onClick={handleApprove}
-                        loading={clicked === 'APPROVED' && loading['notifications/notifyPatient']}
+                        loading={clicked === 'APPROVED' && loading['invitations/sendDoctorsResponse']}
                         disabled={clicked !== null}
                     >
                         Дать контакты
@@ -73,14 +72,14 @@ const DoctorNotification: React.FC<DoctorNotificationProps> = ({ notification })
                     <Button
                         variant='light'
                         onClick={handleReject}
-                        loading={clicked === 'REJECTED' && loading['notifications/notifyPatient']}
+                        loading={clicked === 'REJECTED' && loading['invitations/sendDoctorsResponse']}
                         disabled={clicked !== null}
                     >
                         Отклонить
                     </Button>
                 </Group>}
-        </NotificationCard>
+        </Stack>
     )
 }
 
-export default DoctorNotification
+export default DoctorInvitationCard

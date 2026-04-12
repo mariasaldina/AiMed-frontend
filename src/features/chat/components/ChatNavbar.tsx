@@ -10,7 +10,7 @@ interface ChatNavbarProps extends AppShellNavbarProps {
     onSelect: () => void
 }
 
-const ChatNavbar: React.FC<ChatNavbarProps> = ({ onSelect }) => {
+function ChatNavbar({ onSelect }: ChatNavbarProps) {
     const { chatId } = useParams()
     const parsedChatId = chatId ? Number(chatId) : null
 
@@ -39,6 +39,7 @@ const ChatNavbar: React.FC<ChatNavbarProps> = ({ onSelect }) => {
                                 radius="md"
                                 style={{ cursor: 'pointer' }}
                                 p={{ base: 'xs', sm: 'md' }}
+                                bg={chat.id === parsedChatId ? 'indigo.2' : 'white'}
                             >
                                 <Group justify="space-between">
                                     <Text truncate size="md">

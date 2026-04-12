@@ -137,6 +137,7 @@ export const inviteDoctorThunk = createAsyncThunk(
             dispatch(moveToTop(chatId))
             return res
         } catch (e) {
+            console.log(e)
             if (axios.isAxiosError(e)) {
                 if (e.response?.status === 404) {
                     return rejectWithValue("Такого специалиста не существует")

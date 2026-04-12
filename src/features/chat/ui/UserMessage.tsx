@@ -1,7 +1,6 @@
-import type React from "react"
 import { Paper, Text } from "@mantine/core"
 
-const UserMessage: React.FC<{ content: string }> = ({ content }) => {
+function UserMessage({ content }: { content: string }) {
     return (
         <Paper
             c="white"

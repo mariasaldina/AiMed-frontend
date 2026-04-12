@@ -16,14 +16,14 @@ interface PatientProfileFormProps {
 const formSchema = z.object({
     fullName: z.string().min(1, 'Обязательное поле'),
     address: z.string(),
-    birthdate: z.coerce.date().max(new Date(), 'Невалидная дата рождения'),
+    birthdate: z.coerce.date().max(new Date(), 'Невалидная дата рождения').nullable(),
     gender: z.enum(['MALE', 'FEMALE']),
     medicalHistory: z.string()
 })
 
 type FormValues = z.infer<typeof formSchema>
 
-const PatientProfileForm: React.FC<PatientProfileFormProps> = ({ isEditing, onCancel }) => {
+function PatientProfileForm({ isEditing, onCancel }: PatientProfileFormProps) {
     const { loading } = useAppSelector(state => state.settingsReducer)
     const { user } = useAppSelector(state => state.userReducer)
     const dispatch = useAppDispatch()
@@ -46,7 +46,7 @@ const PatientProfileForm: React.FC<PatientProfileFormProps> = ({ isEditing, onCa
         form.setValues({
             fullName: user.fullName || '',
             address: patientProfile.address || '',
-            birthdate: new Date(patientProfile.birthdate) || new Date(),
+            birthdate: patientProfile.birthdate || null,
             gender: patientProfile.gender || 'MALE',
             medicalHistory: patientProfile.medicalHistory || ''
         })

@@ -1,8 +1,12 @@
-import type React from "react"
 import { Blockquote, Paper, Stack, Text } from "@mantine/core"
 import { IconQuoteFilled } from "@tabler/icons-react"
 
-const InvitationMessage: React.FC<{ content: string, fullName: string }> = ({ content, fullName }) => {
+interface InvitationMessage {
+    content: string,
+    fullName: string
+}
+
+function InvitationMessage({ content, fullName }: InvitationMessage) {
     return (
         <Paper
             p='lg'

@@ -1,7 +1,7 @@
 import { Burger, Flex, Indicator } from "@mantine/core"
 import { IconBell, IconHome, IconLogin, IconMessage2, IconStethoscope, IconUserPlus } from "@tabler/icons-react"
 import HeaderItem from "./HeaderItem"
-import ProfileMenu from "@/ui/ProfileMenu"
+import ProfileMenu from "@/features/header/ProfileMenu"
 import { useAppSelector } from "@/hooks/redux"
 
 interface HeaderProps {
@@ -10,7 +10,7 @@ interface HeaderProps {
     toggleNavbar: () => void
 }
 
-const Header: React.FC<HeaderProps> = ({ navbarOpened, showNavbar, toggleNavbar }) => {
+function Header({ navbarOpened, showNavbar, toggleNavbar }: HeaderProps) {
     const { user } = useAppSelector(state => state.userReducer)
     const { notifications } = useAppSelector(state => state.notificationReducer)
 
@@ -37,10 +37,10 @@ const Header: React.FC<HeaderProps> = ({ navbarOpened, showNavbar, toggleNavbar 
                         label="Чаты"
                         icon={<IconMessage2 />}
                     />}
-                {user && user.role === 'PATIENT' &&
+                {user &&
                     <HeaderItem
                         to="/invitations"
-                        label="Специалисты"
+                        label={user.role === 'PATIENT' ? "Специалисты" : "Пациенты"}
                         icon={<IconStethoscope />}
                     />}
                 {user && <HeaderItem

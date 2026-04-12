@@ -1,9 +1,9 @@
 import { Divider, Group, Pill, Stack, Text } from "@mantine/core"
-import type { DoctorCardType } from "../types/notifications"
-import FieldBlock from "./FieldBlock"
 import { getYears } from "@/utils/time"
+import type { DoctorCardType } from "@/features/invitations/type/invitations"
+import FieldBlock from "./FieldBlock"
 
-const DoctorCard: React.FC<{ doctor: DoctorCardType }> = ({ doctor }) => {
+function DoctorCard({ doctor }: { doctor: DoctorCardType }) {
     return (
         <Stack gap={'sm'}>
 

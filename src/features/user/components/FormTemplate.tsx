@@ -10,7 +10,7 @@ interface FormTemplateProps {
     children: ReactNode
 }
 
-const FormTemplate: React.FC<FormTemplateProps> = ({ isEditing, onCancel, resetForm, onSubmit, loadingIndicator, children }) => {
+function FormTemplate({ isEditing, onCancel, resetForm, onSubmit, loadingIndicator, children }: FormTemplateProps) {
     useEffect(() => {
         resetForm()
     }, [isEditing])

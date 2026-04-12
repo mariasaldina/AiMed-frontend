@@ -1,16 +1,15 @@
 import { Paper, Stack, Text } from "@mantine/core"
 import type { ReactNode } from "react"
-import type { InvitationStatus } from "../types/notifications"
 import { displayTime } from "@/utils/time"
-import { useInvitationStatusColor } from "../hooks/useInvitationStatusColor"
+import { useInvitationStatusColor } from "../../features/invitations/hooks/useInvitationStatusColor"
 
-interface NotificationCardProps {
-    status: InvitationStatus,
+interface ColoredCardProps {
+    status: 'APPROVED' | 'REJECTED' | 'PENDING' | 'CANCELLED'
     createdAt: string,
     children: ReactNode
 }
 
-const NotificationCard: React.FC<NotificationCardProps> = ({ status, createdAt, children }) => {
+function ColoredCard({ status, createdAt, children }: ColoredCardProps) {
     const color = useInvitationStatusColor(status)
 
     return (
@@ -32,4 +31,4 @@ const NotificationCard: React.FC<NotificationCardProps> = ({ status, createdAt, 
     )
 }
 
-export default NotificationCard
+export default ColoredCard

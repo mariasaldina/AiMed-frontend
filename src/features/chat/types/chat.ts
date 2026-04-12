@@ -25,10 +25,6 @@ export interface Doctor {
     practiceStartDate: string
 }
 
-export interface DoctorDataDto {
-    fullName: string
-}
-
 export interface MessageDto {
     id: number,
     type: 'USER' | 'ASSISTANT' | 'DOCTOR_SUGGESTIONS'
@@ -42,11 +38,9 @@ export interface MessageDto {
         urgency: UrgencyStatus
         doctors: string[]
     },
-    doctorSuggestionsPayload?: {
-        doctors: DoctorDto[]
-    },
+    doctorSuggestionsPayload?: DoctorDto[],
     invitationPayload?: {
-        doctorData: DoctorDataDto,
+        fullName: string,
         content: string
     }
 }

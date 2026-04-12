@@ -1,5 +1,4 @@
 import { ActionIcon, Button, useMatches } from '@mantine/core'
-import type React from 'react'
 import type { ReactNode } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 
@@ -9,7 +8,7 @@ interface HeaderItemProps {
     label: string
 }
 
-const HeaderItem: React.FC<HeaderItemProps> = ({ to, icon, label }) => {
+function HeaderItem({ to, icon, label }: HeaderItemProps) {
     const isMobile = useMatches({ base: true, sm: false })
     const { pathname } = useLocation()
     const isActive = pathname === to

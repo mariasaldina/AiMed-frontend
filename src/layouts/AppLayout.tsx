@@ -1,5 +1,5 @@
 import ChatNavbar from "@/features/chat/components/ChatNavbar"
-import Header from "@/ui/header/Header"
+import Header from "@/features/header/Header"
 import { AppShell } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { matchPath, Outlet, useLocation } from "react-router-dom"

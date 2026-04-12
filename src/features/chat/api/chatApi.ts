@@ -8,6 +8,7 @@ export const getMessages = async (chatId: number | null, before: string, limit: 
         `/chat/${chatId}`,
         { params: { before, limit } }
     )
+    console.log(data)
     return { messages: data.messages.map(m => mapMessage(m)), hasMore: data.hasMore }
 }
 
@@ -50,6 +51,6 @@ export const findDoctorsApi = async (chatId: number): Promise<Message> => {
 }
 
 export const inviteDoctor = async (chatId: number, doctorId: number, content: string) => {
-    const { data } = await api.post<MessageDto>('/notifications/invite', { chatId, doctorId, content })
+    const { data } = await api.post<MessageDto>('/invitations/invite', { chatId, doctorId, content })
     return mapMessage(data)
 }

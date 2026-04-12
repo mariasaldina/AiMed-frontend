@@ -9,7 +9,7 @@ interface InviteDoctorModalProps {
     doctorId: number
 }
 
-const InviteDoctorModal: React.FC<InviteDoctorModalProps> = ({ doctorId }) => {
+function InviteDoctorModal({ doctorId }: InviteDoctorModalProps) {
     const [opened, setOpened] = useState(false)
     const dispatch = useAppDispatch()
 

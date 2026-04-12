@@ -4,7 +4,7 @@ import ErrorAlert from "@/ui/ErrorAlert"
 import { Center, Loader } from "@mantine/core"
 import { type ReactNode } from "react"
 
-const CommonWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
+function CommonWrapper({ children }: { children: ReactNode }) {
     const { loading } = useAppSelector(state => state.settingsReducer)
     const { errors } = useAppSelector(state => state.settingsReducer)
     const dispatch = useAppDispatch()

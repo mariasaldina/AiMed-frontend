@@ -2,7 +2,7 @@ import type { UserRole } from "@/features/user/types/user";
 import { useAppSelector } from "@/hooks/redux";
 import { Navigate, Outlet } from "react-router-dom";
 
-const RoleGuard: React.FC<{ role: UserRole }> = ({ role }) => {
+function RoleGuard({ role }: { role: UserRole }) {
     const { user } = useAppSelector(state => state.userReducer)
     
     if (user?.role !== role) {

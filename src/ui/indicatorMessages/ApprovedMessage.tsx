@@ -1,7 +1,7 @@
 import { Flex, Text, useMantineTheme } from "@mantine/core"
 import { IconCheckFilled } from "@tabler/icons-react"
 
-const ApprovedMessage: React.FC<{ text: string }> = ({ text }) => {
+function ApprovedMessage({ text }: { text: string }) {
     const theme = useMantineTheme()
 
     return (

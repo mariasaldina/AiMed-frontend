@@ -1,8 +1,7 @@
-import React from "react"
 import { useNavigate } from "react-router-dom"
-import { Button, Stack, Text, Title } from "@mantine/core"
+import { Button, Stack, Title } from "@mantine/core"
 
-const NotFoundPage: React.FC = () => {
+function NotFoundPage() {
     const navigate = useNavigate()
 
     return (

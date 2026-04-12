@@ -12,20 +12,20 @@ export interface User {
 }
 
 export interface PatientProfile {
-    address: string,
-    birthdate: Date,
+    address: string | null,
+    birthdate: Date | null,
     gender: Gender,
-    medicalHistory: string
+    medicalHistory: string | null
 }
 
 export interface DoctorProfile {
-    address: string,
-    education: string,
-    description: string,
-    practiceStartDate: Date,
-    license: string,
-    licenseIssueDate: Date,
-    licenseExpiryDate: Date,
+    address: string | null,
+    education: string | null,
+    description: string | null,
+    practiceStartDate: Date | null,
+    license: string | null,
+    licenseIssueDate: Date | null,
+    licenseExpiryDate: Date | null,
     specializationIds: number[]
 }
 

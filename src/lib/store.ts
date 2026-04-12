@@ -4,6 +4,7 @@ import settingsReducer from "@/features/settings/settingsSlice"
 import chatsReducer from "@/features/chat/lib/chatsSlice"
 import chatMessagesReducer from "@/features/chat/lib/chatMessagesSlice"
 import notificationReducer from "@/features/notifications/lib/notificationSlice"
+import invitationReducer from "@/features/invitations/lib/invitationSlice"
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
         settingsReducer,
         chatsReducer,
         chatMessagesReducer,
-        notificationReducer
+        notificationReducer,
+        invitationReducer
     }
 })
 

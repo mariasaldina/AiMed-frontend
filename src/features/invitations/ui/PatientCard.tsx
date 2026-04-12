@@ -1,10 +1,10 @@
 import { Stack, Text } from "@mantine/core"
-import type { PatientCardType } from "../types/notifications"
 import { getYears } from "@/utils/time"
 import { IconGenderFemale, IconGenderMale } from "@tabler/icons-react"
 import FieldBlock from "./FieldBlock"
+import type { PatientCardType } from "../type/invitations"
 
-const PatientCard: React.FC<{ patient: PatientCardType }> = ({ patient }) => {
+function PatientCard({ patient }: { patient: PatientCardType }) {
     return (
         <Stack gap={'sm'}>
 

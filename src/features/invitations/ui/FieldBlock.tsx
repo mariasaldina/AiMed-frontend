@@ -7,7 +7,7 @@ interface FieldBlockProps {
     children?: ReactNode;
 }
 
-const FieldBlock: React.FC<FieldBlockProps> = ({ label, value, children }) => {
+function FieldBlock({ label, value, children }: FieldBlockProps) {
     return (
         <Flex
             gap={{ base: 2, sm: 20 }}

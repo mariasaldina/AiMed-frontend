@@ -1,7 +1,12 @@
 import { Button, Flex, Modal, Stack, Text } from "@mantine/core"
 import { IconMoodSadFilled } from "@tabler/icons-react";
 
-const ErrorAlert: React.FC<{ errorMessage: string | null; onClose: () => void }> = ({ errorMessage, onClose }) => {
+interface ErrorAlertProps {
+    errorMessage: string | null
+    onClose: () => void
+}
+
+function ErrorAlert({ errorMessage, onClose }: ErrorAlertProps) {
     return (
         <Modal
             opened={!!errorMessage}

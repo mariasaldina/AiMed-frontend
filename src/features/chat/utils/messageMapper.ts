@@ -27,7 +27,7 @@ export function mapMessage(dto: MessageDto): Message {
             kind: 'doctorSuggestions',
             id: String(dto.id),
             createdAt: dto.createdAt,
-            doctors: dto.doctorSuggestionsPayload!.doctors.map((doctor): Doctor => ({
+            doctors: dto.doctorSuggestionsPayload!.map((doctor): Doctor => ({
                 userId: String(doctor.userId),
                 fullName: doctor.fullName,
                 specializations: doctor.specializations,
@@ -44,7 +44,7 @@ export function mapMessage(dto: MessageDto): Message {
             kind: 'invitation',
             id: String(dto.id),
             createdAt: dto.createdAt,
-            doctorsFullName: dto.invitationPayload!.doctorData.fullName,
+            doctorsFullName: dto.invitationPayload!.fullName,
             content: dto.invitationPayload!.content
         }
     }

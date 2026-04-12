@@ -2,7 +2,7 @@ import { getUserThunk } from "@/features/user/lib/userSlice"
 import { useAppDispatch } from "@/hooks/redux"
 import { useEffect, type ReactNode } from "react"
 
-const UserInitializer: React.FC<{ children: ReactNode }> = ({ children }) => {
+function UserInitializer({ children }: { children: ReactNode }) {
     const dispatch = useAppDispatch()
 
     useEffect(() => {

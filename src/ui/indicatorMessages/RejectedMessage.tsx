@@ -1,7 +1,7 @@
 import { Flex, Text, useMantineTheme } from "@mantine/core"
 import { IconCircleXFilled } from "@tabler/icons-react"
 
-const RejectedMessage: React.FC<{ text: string }> = ({ text }) => {
+function RejectedMessage({ text }: { text: string }) {
     const theme = useMantineTheme()
 
     return (

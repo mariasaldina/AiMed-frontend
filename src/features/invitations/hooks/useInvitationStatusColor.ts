@@ -1,5 +1,5 @@
+import type { InvitationStatus } from "@/features/invitations/type/invitations"
 import { useMantineTheme } from "@mantine/core"
-import type { InvitationStatus } from "../types/notifications"
 
 export const useInvitationStatusColor = (status: InvitationStatus) => {
     const theme = useMantineTheme()
@@ -7,7 +7,8 @@ export const useInvitationStatusColor = (status: InvitationStatus) => {
     const colorMap: Record<InvitationStatus, string> = {
         APPROVED: 'green',
         REJECTED: 'pink',
-        PENDING: 'blue'
+        PENDING: 'blue',
+        CANCELLED: 'grey'
     }
 
     return theme.colors[colorMap[status]]

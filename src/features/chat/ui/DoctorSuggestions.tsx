@@ -1,4 +1,3 @@
-import type React from 'react'
 import type { Doctor } from '../types/chat'
 import { Badge, Flex, Paper, Stack, Text } from '@mantine/core'
 import { getExperience } from '../utils/experienceFormatter'
@@ -8,7 +7,7 @@ interface DoctorSuggestionsProps {
     doctors: Doctor[]
 }
 
-const DoctorSuggestions: React.FC<DoctorSuggestionsProps> = ({ doctors }) => {
+function DoctorSuggestions({ doctors }: DoctorSuggestionsProps) {
     return (
         <Stack gap={5} style={{ alignSelf: 'flex-start' }} maw={{ base: 500, sm: 700 }}>
             <Text fw={800}>Подходящие специалисты</Text>

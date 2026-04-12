@@ -20,16 +20,16 @@ const formSchema = z.object({
     address: z.string().min(1, 'Обязательное поле'),
     education: z.string().min(1, 'Обязательное поле'),
     description: z.string().min(1, 'Обязательное поле'),
-    practiceStartDate: z.coerce.date(),
+    practiceStartDate: z.coerce.date().nullable(),
     license: z.string().min(1, 'Обязательное поле'),
-    licenseIssueDate: z.coerce.date(),
-    licenseExpiryDate: z.coerce.date(),
+    licenseIssueDate: z.coerce.date().nullable(),
+    licenseExpiryDate: z.coerce.date().nullable(),
     specializationIds: z.array(z.number()).min(1, 'Укажите хотя бы 1 специальность')
 })
 
 type FormValues = z.infer<typeof formSchema>
 
-const DoctorProfileForm: React.FC<DoctorProfileFormProps> = ({ isEditing, onCancel }) => {
+function DoctorProfileForm({ isEditing, onCancel }: DoctorProfileFormProps) {
     const { loading } = useAppSelector(state => state.settingsReducer)
     const { user } = useAppSelector(state => state.userReducer)
     const dispatch = useAppDispatch()
@@ -60,10 +60,10 @@ const DoctorProfileForm: React.FC<DoctorProfileFormProps> = ({ isEditing, onCanc
             address: '',
             education: '',
             description: '',
-            practiceStartDate: new Date(),
+            practiceStartDate: null,
             license: '',
-            licenseIssueDate: new Date(),
-            licenseExpiryDate: new Date(),
+            licenseIssueDate: null,
+            licenseExpiryDate: null,
             specializationIds: []
         },
         validate: zod4Resolver(formSchema)
@@ -75,10 +75,10 @@ const DoctorProfileForm: React.FC<DoctorProfileFormProps> = ({ isEditing, onCanc
             address: doctorProfile.address || '',
             education: doctorProfile.education || '',
             description: doctorProfile.description || '',
-            practiceStartDate: doctorProfile.practiceStartDate || new Date(),
+            practiceStartDate: doctorProfile.practiceStartDate || null,
             license: doctorProfile.license || '',
-            licenseIssueDate: doctorProfile.licenseIssueDate || new Date(),
-            licenseExpiryDate: doctorProfile.licenseExpiryDate || new Date(),
+            licenseIssueDate: doctorProfile.licenseIssueDate || null,
+            licenseExpiryDate: doctorProfile.licenseExpiryDate || null,
             specializationIds: doctorProfile.specializationIds || []
         })
     }
