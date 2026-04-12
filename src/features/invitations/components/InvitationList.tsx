@@ -32,6 +32,7 @@ const InvitationList = () => {
         <Stack
             py={{ base: 'md', sm: 'xl' }}
             px={{ base: 'md', sm: '20%' }}
+            h={'100%'}
         >
             <CardContainer
                 data={invitations}

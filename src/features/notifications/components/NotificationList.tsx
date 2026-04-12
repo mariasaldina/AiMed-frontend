@@ -4,10 +4,13 @@ import { useEffect } from "react"
 import { loadNotificationsThunk, readNotificationsThunk } from "../lib/notificationSlice"
 import CardContainer from "@/ui/cards/CardContainer"
 import type { Notification } from "../types/notifications"
+import ApprovedMessage from "@/ui/indicatorMessages/ApprovedMessage"
+import RejectedMessage from "@/ui/indicatorMessages/RejectedMessage"
+import PendingMessage from "@/ui/indicatorMessages/PendingMessage"
+import CancelMessage from "@/ui/indicatorMessages/CancelMessage"
 
 const NotificationList = () => {
     const { read, unread } = useAppSelector(state => state.notificationReducer.notifications)
-    const { user } = useAppSelector(state => state.userReducer)
     const { loading } = useAppSelector(state => state.settingsReducer)
 
     const dispatch = useAppDispatch()
@@ -21,7 +24,20 @@ const NotificationList = () => {
     }, [])
 
     const elementHandler = (n: Notification) => {
-        return (<></>)
+        switch (n.status) {
+            case 'APPROVED': {
+                return <ApprovedMessage text="Специалист принял ваше приглашение" />
+            }
+            case 'REJECTED': {
+                return <RejectedMessage text="Специалист отклонил ваше приглашение" />
+            }
+            case 'PENDING': {
+                return <PendingMessage text="Вы получили приглашение от пациента" />
+            }
+            case 'CANCELLED': {
+                return <CancelMessage text="Пациент отменил своё приглашение" />
+            }
+        }
     }
 
     return (

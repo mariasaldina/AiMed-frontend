@@ -8,7 +8,7 @@ export const useInvitationStatusColor = (status: InvitationStatus) => {
         APPROVED: 'green',
         REJECTED: 'pink',
         PENDING: 'blue',
-        CANCELLED: 'grey'
+        CANCELLED: 'gray'
     }
 
     return theme.colors[colorMap[status]]

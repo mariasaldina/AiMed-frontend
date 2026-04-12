@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { Invitation } from "../type/invitations";
-import { getInvitations, sendDoctorsResponse } from "../api/invitations";
+import { cancelInvitation, getInvitations, sendDoctorsResponse } from "../api/invitations";
 import axios from "axios";
 
 interface InvitationSliceType {
@@ -24,6 +24,15 @@ const invitationSlice = createSlice({
                     state.invitations.map(n => (
                         n.id === action.payload.invitationId
                             ? { ...n, status: action.payload.status }
+                            : n
+                    ))
+            })
+
+            .addCase(cancelInvitationThunk.fulfilled, (state, action) => {
+                state.invitations =
+                    state.invitations.map(n => (
+                        n.id === action.payload.invitationId
+                            ? { ...n, status: 'CANCELLED' }
                             : n
                     ))
             })
@@ -53,6 +62,29 @@ export const sendDoctorsResponseThunk = createAsyncThunk(
                 }
             }
             return rejectWithValue("Ошибка отправки ответа")
+        }
+    }
+)
+
+export const cancelInvitationThunk = createAsyncThunk(
+    'invitations/cancelInvitation',
+    async ({ invitationId }: { invitationId: number }, { rejectWithValue }) => {
+        try {
+            await cancelInvitation(invitationId)
+            return { invitationId }
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                if (e.response?.status === 403) {
+                    return rejectWithValue("Недостаточно прав")
+                }
+                if (e.response?.status === 404) {
+                    return rejectWithValue("Такого приглашения не существует")
+                }
+                if (e.response?.status === 409) {
+                    return rejectWithValue("Невалидный статус приглашения")
+                }
+            }
+            return rejectWithValue("Ошибка отмены приглашения")
         }
     }
 )

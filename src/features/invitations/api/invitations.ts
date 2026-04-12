@@ -9,3 +9,7 @@ export const getInvitations = async () => {
     const { data } = await api.get<Invitation[]>('/invitations')
     return data
 }
+
+export const cancelInvitation = async (invitationId: number) => {
+    await api.post(`/invitations/${invitationId}/cancel`)
+}
