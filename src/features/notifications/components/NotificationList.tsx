@@ -41,10 +41,7 @@ const NotificationList = () => {
     }
 
     return (
-        <Stack
-            py={{ base: 'md', sm: 'xl' }}
-            px={{ base: 'md', sm: '20%' }}
-        >
+        <Stack py={{ base: 'md', sm: 'xl' }}>
             <CardContainer
                 data={unread}
                 loading={loading['notifications/loadNotifications']}

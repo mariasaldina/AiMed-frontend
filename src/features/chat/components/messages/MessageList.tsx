@@ -1,8 +1,8 @@
-import AssistantMessage from "../ui/AssitantMessage"
-import UserMessage from "../ui/UserMessage"
-import DoctorSuggestions from "../ui/DoctorSuggestions"
+import AssistantMessage from "../../ui/AssitantMessage"
+import UserMessage from "../../ui/UserMessage"
+import DoctorSuggestions from "../../ui/DoctorSuggestions"
 import { Flex } from "@mantine/core"
-import InvitationMessage from "../ui/InvitationMessage"
+import InvitationMessage from "../../ui/InvitationMessage"
 import { useAppSelector } from "@/hooks/redux"
 
 const MessageList = () => {
@@ -12,8 +12,6 @@ const MessageList = () => {
         <Flex
             direction={'column'}
             style={{ listStyle: 'none' }}
-            px={{ base: 'md', sm: 'xl' }}
-            py={{ base: 'lg', sm: 'xl' }}
             pt='50'
             gap={{ base: 'md', sm: 'xl' }}
         >

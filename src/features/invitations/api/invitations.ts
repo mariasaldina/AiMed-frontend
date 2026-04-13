@@ -7,6 +7,7 @@ export const sendDoctorsResponse = async (status: 'APPROVED' | 'REJECTED', invit
 
 export const getInvitations = async () => {
     const { data } = await api.get<Invitation[]>('/invitations')
+    console.log(data)
     return data
 }
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, type PayloadAction  } from "@reduxjs/toolkit";
 import type { Chat } from "../types/chat";
-import { createChat, deleteChat, getChats } from "../api/chatApi";
+import { createChat, deleteChat, getChats, renameChat } from "../api/chatApi";
 import axios from "axios";
 
 interface ChatsSliceType {
@@ -31,6 +31,12 @@ const chatsSlice = createSlice({
             })
             .addCase(deleteChatThunk.fulfilled, (state, action) => {
                 state.chats = state.chats.filter(c => c.id !== action.payload)
+            })
+            .addCase(renameChatThunk.fulfilled, (state, action) => {
+                const chat = state.chats.find(c => c.id === action.payload.chatId)
+                if (chat) {
+                    chat.title = action.payload.title
+                }
             })
     }
 })
@@ -67,6 +73,23 @@ export const deleteChatThunk = createAsyncThunk('chats/deleteChat',
                 }
             }
             return rejectWithValue("Ошибка удаления чата")
+        }
+    }
+)
+
+
+export const renameChatThunk = createAsyncThunk('chats/renameChat',
+    async ({ chatId, title }: { chatId: number, title: string }, { rejectWithValue }) => {
+        try {
+            await renameChat(chatId, title)
+            return { chatId, title }
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                if (e.response?.status === 404) {
+                    return rejectWithValue("Такого чата не существует")
+                }
+            }
+            return rejectWithValue("Ошибка при попытке переименовать чат")
         }
     }
 )

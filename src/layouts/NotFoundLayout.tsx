@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { Button, Stack, Title } from "@mantine/core"
 
-function NotFoundPage() {
+function NotFoundLayout() {
     const navigate = useNavigate()
 
     return (
@@ -18,4 +18,4 @@ function NotFoundPage() {
     )
 }
 
-export default NotFoundPage
+export default NotFoundLayout

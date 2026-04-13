@@ -1,28 +1,32 @@
 import { useAppSelector } from "@/hooks/redux"
 import { Button, Flex, Textarea } from "@mantine/core"
-import useMessageInput from "../hooks/useMessageInput"
-import { useParams } from "react-router-dom"
+import useMessageInput from "../../hooks/useMessageInput"
 
-const MessageInput = () => {
-    const { chatId } = useParams()
-    const parsedChatId = chatId ? Number(chatId) : null
+interface MessageInputProps {
+    chatId?: number
+    showLoading?: boolean
+}
 
+function MessageInput({ chatId, showLoading = false }: MessageInputProps) {
     const loading = useAppSelector(state => state.settingsReducer.loading)
-    const sending = loading['chatMessages/sendMessage'] || loading['chatMessages/findDoctors']
+    const sending =
+        loading['chatMessages/sendMessage'] ||
+        loading['chatMessages/findDoctors'] ||
+        loading['chatMessages/sendMessageNonOptimistic']
     const {
         content,
         setContent,
         handleSend,
         findDoctors
-    } = useMessageInput(parsedChatId)
+    } = useMessageInput(chatId)
 
     return (
         <form onSubmit={e => { e.preventDefault(); handleSend(); }} style={{ width: '100%'}}>
             <Flex
                 align={'stretch'}
                 gap={{ base: 'sm', sm: 'md' }}
-                p={{ base: 'lg', sm: 'xl' }}
-                direction={{ base: 'column' , sm: 'row' }}
+                pb={{ base: 'lg', sm: 'xl' }}
+                direction={{ base: 'column' , sm: chatId ? 'row' : 'column' }}
                 w={'100%'}
             >
                 <Textarea
@@ -39,17 +43,17 @@ const MessageInput = () => {
                     direction={'column'}
                     gap={{ base: 'sm' }}
                 >
-                    <Button type="submit" disabled={sending} style={{ flexShrink: 0 }}>
+                    <Button type="submit" disabled={sending} style={{ flexShrink: 0 }} loading={showLoading && sending}>
                         Отправить
                     </Button>
-                    <Button
+                    {chatId && <Button
                         type="button"
                         onClick={findDoctors}
                         disabled={sending}
                         style={{ flexShrink: 0 }}
                     >
                         Найти специалиста
-                    </Button>
+                    </Button>}
                 </Flex>
             </Flex>
         </form>

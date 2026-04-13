@@ -9,7 +9,7 @@ interface HeaderItemProps {
 }
 
 function HeaderItem({ to, icon, label }: HeaderItemProps) {
-    const isMobile = useMatches({ base: true, sm: false })
+    const isMobile = useMatches({ base: true, md: false })
     const { pathname } = useLocation()
     const isActive = pathname === to
 

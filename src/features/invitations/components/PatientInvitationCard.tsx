@@ -38,7 +38,7 @@ function PatientInvitationCard({ invitation }: PatientInvitationCardProps) {
             {invitation.status === 'APPROVED' &&
                 <>
                     <ApprovedMessage text="Специалист поделился с вами контактами" />
-                    <ContactsCard contacts={invitation.doctor.contacts!} />
+                    <ContactsCard contacts={invitation.doctor.contacts} />
                 </>}
 
             {invitation.status === 'REJECTED' &&

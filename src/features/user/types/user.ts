@@ -14,7 +14,7 @@ export interface User {
 export interface PatientProfile {
     address: string | null,
     birthdate: Date | null,
-    gender: Gender,
+    gender: Gender | null,
     medicalHistory: string | null
 }
 

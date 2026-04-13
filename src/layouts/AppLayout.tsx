@@ -1,4 +1,4 @@
-import ChatNavbar from "@/features/chat/components/ChatNavbar"
+import ChatNavbar from "@/features/chat/components/navbar/ChatNavbar"
 import Header from "@/features/header/Header"
 import { AppShell } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
@@ -25,6 +25,8 @@ const AppLayout = () => {
             } : undefined}
 
             header={{ height: 50 }}
+            
+            h={'100dvh'}
         >
 
             <AppShell.Header>
@@ -45,7 +47,7 @@ const AppLayout = () => {
             }
 
             <AppShell.Main
-                h="100dvh"
+                h="100%"
                 style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
             >
                 <Outlet />

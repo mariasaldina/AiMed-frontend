@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/redux"
-import { Group, Radio, Textarea, TextInput } from "@mantine/core"
+import { Select, Textarea, TextInput } from "@mantine/core"
 import { DateInput } from '@mantine/dates'
 import { useForm } from "@mantine/form"
 import * as z from "zod"
@@ -17,7 +17,7 @@ const formSchema = z.object({
     fullName: z.string().min(1, 'Обязательное поле'),
     address: z.string(),
     birthdate: z.coerce.date().max(new Date(), 'Невалидная дата рождения').nullable(),
-    gender: z.enum(['MALE', 'FEMALE']),
+    gender: z.enum(['MALE', 'FEMALE']).nullable(),
     medicalHistory: z.string()
 })
 
@@ -36,7 +36,7 @@ function PatientProfileForm({ isEditing, onCancel }: PatientProfileFormProps) {
             fullName: '',
             address: '',
             birthdate: new Date(),
-            gender: 'MALE',
+            gender: null,
             medicalHistory: ''
         },
         validate: zod4Resolver(formSchema)
@@ -47,7 +47,7 @@ function PatientProfileForm({ isEditing, onCancel }: PatientProfileFormProps) {
             fullName: user.fullName || '',
             address: patientProfile.address || '',
             birthdate: patientProfile.birthdate || null,
-            gender: patientProfile.gender || 'MALE',
+            gender: patientProfile.gender || null,
             medicalHistory: patientProfile.medicalHistory || ''
         })
     }
@@ -83,16 +83,16 @@ function PatientProfileForm({ isEditing, onCancel }: PatientProfileFormProps) {
                 readOnly={!isEditing}
                 {...form.getInputProps('birthdate')}
             />
-            <Radio.Group
+            <Select
                 label="Пол"
+                data={[
+                    { value: null, label: 'Не указан' },
+                    { value: 'MALE', label: 'Мужской' },
+                    { value: 'FEMALE', label: 'Женский' },
+                ]}
                 readOnly={!isEditing}
                 {...form.getInputProps('gender')}
-            >
-                <Group>
-                    <Radio label="мужской" value="MALE" />
-                    <Radio label="женский" value="FEMALE" />
-                </Group>
-            </Radio.Group>
+            />
             <Textarea
                 placeholder="описание"
                 label="Медицинская история"

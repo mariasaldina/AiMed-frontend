@@ -8,7 +8,6 @@ export const getMessages = async (chatId: number | null, before: string, limit: 
         `/chat/${chatId}`,
         { params: { before, limit } }
     )
-    console.log(data)
     return { messages: data.messages.map(m => mapMessage(m)), hasMore: data.hasMore }
 }
 
@@ -43,6 +42,10 @@ export const createChat = async (title: string): Promise<Chat> => {
 
 export const deleteChat = async (chatId: number): Promise<void> => {
     await api.delete(`/chat/${chatId}`)
+}
+
+export const renameChat = async (chatId: number, title: string): Promise<void> => {
+    await api.patch(`/chat/${chatId}`, { title })
 }
 
 export const findDoctorsApi = async (chatId: number): Promise<Message> => {

@@ -5,9 +5,9 @@ import TypingIndicator from "@/ui/TypingIndicator"
 import { Box, Center, Flex, Loader, ScrollArea } from "@mantine/core"
 import { useParams } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "@/hooks/redux"
-import { loadMessagesThunk } from "../lib/chatMessagesSlice"
-import { useChatMessages } from "../hooks/useChatMessages"
-import { useInfiniteScroll } from "../../../hooks/useInfiniteScroll"
+import { loadMessagesThunk } from "../../lib/chatMessagesSlice"
+import { useChatMessages } from "../../hooks/useChatMessages"
+import { useInfiniteScroll } from "../../../../hooks/useInfiniteScroll"
 
 const Chat = () => {
     const { chatId } = useParams()
@@ -37,16 +37,17 @@ const Chat = () => {
             h={"100%"}
             direction={"column"}
             align={'center'}
-            px={{ base: 'lg', sm: '10dvh' }}
+            flex={1} mih={0} w='100%'
         >
-            <Box flex={1} mih={0} w='100%'>
-                <ScrollArea
-                    h={"100%"}
-                    type="auto"
-                    viewportRef={scrollableRef}
-                    offsetScrollbars
-                    onScrollCapture={onScroll}
-                >
+            <ScrollArea
+                w='100%'
+                h={"100%"}
+                type="auto"
+                viewportRef={scrollableRef}
+                offsetScrollbars
+                onScrollCapture={onScroll}
+            >
+                <Box px={{ base: 'lg', sm: '10%' }} flex={1} mih={0} w='100%'>
                     <div style={{ height: 1 }} />
 
                     {loading['chatMessages/loadMessages'] &&
@@ -62,10 +63,13 @@ const Chat = () => {
                         </Box>}
                     <MessageList />
                     {sending ? <Box p={{ base: 'md', sm: 'xl' }}><TypingIndicator /></Box> : <></>}
-
-                </ScrollArea>
+                </Box>
+            </ScrollArea>
+            
+            <Box px={{ base: 'lg', sm: '10%' }} w='100%'>
+                {parsedChatId && <MessageInput chatId={parsedChatId} />}
             </Box>
-            {parsedChatId && <MessageInput />}
+
         </Flex>
     )
 }

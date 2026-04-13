@@ -55,6 +55,10 @@ const chatMessagesSlice = createSlice({
             .addCase(inviteDoctorThunk.fulfilled, (state, action) => {
                 state.messages.push(action.payload)
             })
+
+            .addCase(sendMessageNonOptimisticThunk.fulfilled, (state, action) => {
+                state.messages.push(...action.payload)
+            })
     }
 })
 
@@ -70,7 +74,6 @@ export const loadMessagesThunk = createAsyncThunk<
             console.log(res)
             return res
         } catch (e) {
-            console.log(e)
             if (axios.isAxiosError(e)) {
                 if (e.response?.status === 404) {
                     return rejectWithValue("Такого чата не существует")
@@ -105,6 +108,31 @@ export const sendMessageThunk = createAsyncThunk(
     }
 )
 
+export const sendMessageNonOptimisticThunk = createAsyncThunk(
+    'chatMessages/sendMessageNonOptimistic',
+    async (
+        { content, chatId }: { content: string, chatId: number },
+        { rejectWithValue, dispatch }
+    ) => {
+        try {
+            const { userMessage, assistantMessage } = await sendMessage(content, chatId)
+            dispatch(moveToTop(chatId))
+            return [userMessage, assistantMessage]
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                if (e.response?.status === 404) {
+                    return rejectWithValue("Такого чата не существует")
+                }
+                if (e.response?.status === 503) {
+                    return rejectWithValue("AI-сервис недоступен, попробуйте позже")
+                }
+            }
+            return rejectWithValue("Ошибка отправки сообщения")
+        }
+    }
+)
+
+
 export const findDoctorsThunk = createAsyncThunk(
     'chatMessages/findDoctors',
     async ({ chatId }: { chatId: number }, { rejectWithValue, dispatch }) => {
@@ -137,7 +165,6 @@ export const inviteDoctorThunk = createAsyncThunk(
             dispatch(moveToTop(chatId))
             return res
         } catch (e) {
-            console.log(e)
             if (axios.isAxiosError(e)) {
                 if (e.response?.status === 404) {
                     return rejectWithValue("Такого специалиста не существует")
